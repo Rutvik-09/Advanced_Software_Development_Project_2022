@@ -25,12 +25,15 @@ SECRET_KEY = 'django-insecure-re=rnbs!oy3_7mpbbp4+y&48yvlmfpn)5ouc@h4h3naswk6755
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # User Apps
+    'farmfoodapp',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

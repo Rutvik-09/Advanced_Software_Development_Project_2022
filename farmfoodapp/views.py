@@ -24,3 +24,7 @@ def login_api(request):
 def reset_secret(request):
     user_data = request.data
     return True
+
+
+def register_view(request):
+    return render(request, 'register.html')

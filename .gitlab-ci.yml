@@ -29,6 +29,10 @@
 # .gitlab-ci.yml are passed to the service and variables defined in the GitLab UI are not.
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
+stages:
+  - build
+  - code_quality
+
 variables:
   # DJANGO_CONFIG: "test"
   MYSQL_DATABASE: $MYSQL_DB
@@ -65,3 +69,7 @@ migrations:
     # - python3 manage.py makemigrations myapp
     - python3 manage.py migrate
     - python3 manage.py check
+
+code_quality:
+  stage: code_quality
+  script: flake8

@@ -1,5 +1,8 @@
 from django.urls import path
 
-urlpatterns = [
+from farmfoodapp import views
 
+urlpatterns = [
+    path('register-api/', views.register_api, name="register-api"),
+    path('login-api/', views.login_api, name="login-api")
 ]

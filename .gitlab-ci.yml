@@ -11,7 +11,7 @@
 #         'NAME': os.environ.get('MYSQL_DATABASE'),
 #        	'USER':  os.environ.get('MYSQL_USER'),
 #        	'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
-#       	'HOST': 'mysql',
+#       	'HOST': os.environ.get('MYSQL_HOSTNAME'),
 #     	  'PORT': '3306',
 #         'CONN_MAX_AGE':60,
 #      },
@@ -29,12 +29,17 @@
 # .gitlab-ci.yml are passed to the service and variables defined in the GitLab UI are not.
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
+stages:
+  - build
+  - code_quality
+
 variables:
   # DJANGO_CONFIG: "test"
-  MYSQL_DATABASE: $MYSQL_DB
-  MYSQL_ROOT_PASSWORD: $MYSQL_PASS
+  MYSQL_DATABASE: $MYSQL_DATABASE
+  #  MYSQL_ROOT_PASSWORD: $MYSQL_PASS
   MYSQL_USER: $MYSQL_USER
-  MYSQL_PASSWORD: $MYSQL_PASS
+  MYSQL_PASSWORD: $MYSQL_PASSWORD
+  MYSQL_HOST: $MYSQL_HOST
 
 default:
   image: ubuntu:20.04
@@ -64,4 +69,9 @@ migrations:
     - python3 manage.py makemigrations
     # - python3 manage.py makemigrations myapp
     - python3 manage.py migrate
-    - python3 manage.py check
+#    - python3 manage.py check
+
+code_quality:
+  stage: code_quality
+  script:
+    - flake8

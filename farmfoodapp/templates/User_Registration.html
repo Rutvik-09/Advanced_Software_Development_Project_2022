@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/UI.css">
+	<title>Registration Page</title>
+</head>
+
+<body>
+
+	<div class="container">
+		<div class="header">
+			<h2>User Registration</h2>
+		</div>
+		<form id="form" class="form">
+
+			<fieldset>
+				<legend>Personal Information:</legend>
+
+				<div class="form-control">
+					<label>First Name</label>
+					<input type="text" id="firstname" />
+					<i class="fas fa-check-circle"></i>
+					<i class="fas fa-exclamation-circle"></i>
+					<small>Error message</small>
+				</div>
+				<div class="form-control">
+					<label>Last Name</label>
+					<input type="text" id="lastname" />
+					<i class="fas fa-check-circle"></i>
+					<i class="fas fa-exclamation-circle"></i>
+					<small>Error message</small>
+				</div>
+				<div class="form-control">
+					<label>Date Of Birth</label>
+					<input type="date" id="dateOfBirth" placeholder="dd/mm/yyyy"/>
+					<i class="fas fa-check-circle"></i>
+					<i class="fas fa-exclamation-circle"></i>
+					<small>Error message</small>
+				</div>
+			</fieldset><br><br>
+
+			<fieldset>
+				<legend>Contact Information:</legend>
+				<div class="form-control">
+					<label>Email</label>
+					<input type="email" id="email"/>
+					<i class="fas fa-check-circle"></i>
+					<i class="fas fa-exclamation-circle"></i>
+					<small>Error message</small>
+				</div>
+
+				<div class="form-control">
+					<label>Phone Number</label>
+					<br>
+					<i class="fas fa-check-circle"></i>
+					<i class="fas fa-exclamation-circle"></i>
+					<select name="CountryCode">
+						<option data-CountryCode="CA" value="1" selected>Canada (+1)</option>
+						<optgroup label="Other Countries">
+							<option data-CountryCode="DZ" value="213">Algeria (+213)</option>
+							<option data-CountryCode="AD" value="376">Andorra (+376)</option>
+							<option data-CountryCode="AO" value="244">Angola (+244)</option>
+							<option data-CountryCode="BG" value="359">Bulgaria (+359)</option>
+							<option data-CountryCode="IN" value="91">India (+91)</option>
+							<option data-CountryCode="MX" value="52">Mexico (+52)</option>
+							<option data-CountryCode="QA" value="974">Qatar (+974)</option>
+							<option data-CountryCode="SG" value="65">Singapore (+65)</option>
+							<option data-CountryCode="TH" value="66">Thailand (+66)</option>
+							<option data-CountryCode="US" value="1">USA (+1)</option>
+						</optgroup>
+					</select>
+					<br><br>
+					<input type="tel" id="phonenumber" />
+					<small>Error message</small>
+				</div>
+			</fieldset> <br><br>
+			<fieldset>
+				<legend>Contact Information:</legend>
+
+			<div class="form-control">
+				<label>Password</label>
+				<input type="password" id="password" />
+				<i class="fas fa-check-circle"></i>
+				<i class="fas fa-exclamation-circle"></i>
+				<small>Error message</small>
+			</div>
+			<div class="form-control">
+				<label>Confirm Pasword</label>
+				<input type="password"  id="password2" />
+				<i class="fas fa-check-circle"></i>
+				<i class="fas fa-exclamation-circle"></i>
+				<small>Error message</small>
+			</div>
+
+			</fieldset>
+
+			<button>Submit</button>
+		</form>
+	</div>
+	<script type="text/javascript" src="js/User_Reg_Validations.js"></script>
+</body>
+
+</html>

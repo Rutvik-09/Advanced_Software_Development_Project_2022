@@ -31,6 +31,7 @@
 
 stages:
   - build
+  - test
   - code_quality
 
 variables:

@@ -75,7 +75,7 @@ migrations:
 test_case:
   stage: test
   script:
-    - python manage.py test
+    - python3 manage.py test farmfoodapp
 
 code_quality:
   stage: code_quality

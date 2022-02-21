@@ -69,7 +69,12 @@ migrations:
     - python3 manage.py makemigrations
     - python3 manage.py makemigrations farmfoodapp
     - python3 manage.py migrate
-#    - python3 manage.py check
+    - python3 manage.py check
+
+test_case:
+  stage: test
+  script:
+    - python manage.py test
 
 code_quality:
   stage: code_quality

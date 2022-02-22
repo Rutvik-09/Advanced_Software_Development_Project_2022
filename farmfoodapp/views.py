@@ -68,3 +68,7 @@ def reset_secret(request):
 
 def register_view(request):
     return render(request, 'User_Registration.html')
+
+
+def login_view(request):
+    return render(request, 'User_Login.html')

@@ -14,7 +14,7 @@ utc = pytz.UTC
 
 # Create your views here.
 
-@api_view(["POST"])
+@api_view(["POST", "GET"])
 def register_api(request):
     try:
         data = request.data
@@ -33,7 +33,7 @@ def register_api(request):
         return Response(data={"msg": "failed", "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(["POST"])
+@api_view(["POST", "GET"])
 def login_api(request):
     try:
         user_data = request.data
@@ -67,4 +67,8 @@ def reset_secret(request):
 
 
 def register_view(request):
-    return render(request, 'register.html')
+    return render(request, 'User_Registration.html')
+
+
+def login_view(request):
+    return render(request, 'User_Login.html')

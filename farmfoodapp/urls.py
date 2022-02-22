@@ -4,5 +4,7 @@ from farmfoodapp import views
 
 urlpatterns = [
     path('register-api/', views.register_api, name="register-api"),
-    path('login-api/', views.login_api, name="login-api")
+    path('login-api/', views.login_api, name="login-api"),
+    path('register/', views.register_view, name='register-view'),
+    path('login/', views.login_view, name='login-view')
 ]

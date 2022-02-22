@@ -56,7 +56,7 @@ ROOT_URLCONF = 'farmfood.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'farmfoodapp')],
+        'DIRS': [os.path.join(BASE_DIR, 'farmfoodapp', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

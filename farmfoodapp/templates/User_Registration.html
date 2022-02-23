@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="css/UI.css">
+	<link rel="stylesheet" href="{% static 'css/UI.css' %}">
 	<title>Registration Page</title>
 </head>
 
@@ -13,7 +14,7 @@
 		<div class="header">
 			<h2>User Registration</h2>
 		</div>
-		<form id="form" class="form">
+		<form id="form" class="form" method="POST" action="/register-api/">
 
 			<fieldset>
 				<legend>Personal Information:</legend>
@@ -99,7 +100,7 @@
 			<button>Submit</button>
 		</form>
 	</div>
-	<script type="text/javascript" src="js/User_Reg_Validations.js"></script>
+	<script type="text/javascript" src="{% static 'js/User_Reg_Validations.js' %}"></script>
 </body>
 
 </html>

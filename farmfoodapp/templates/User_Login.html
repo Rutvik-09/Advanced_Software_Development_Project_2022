@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="css/UI.css">
+	<link rel="stylesheet" href="{% static 'css/UI.css' %}">
 	<title>Login Page</title>
 </head>
 
@@ -35,7 +36,7 @@
             <p><a href="http://127.0.0.1:5500/User_ForgetPassword.html">Forgot Password!</a></p>
 		</form>
 	</div>
-	<script type="text/javascript" src="js/User_Login_Validations.js"></script>
+	<script type="text/javascript" src="{% static 'js/User_Login_Validations.js' %}"></script>
 </body>
 
 </html>

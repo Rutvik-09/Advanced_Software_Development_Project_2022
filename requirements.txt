@@ -3,3 +3,4 @@ djangorestframework
 flake8
 mysqlclient
 pytz
+pyjwt

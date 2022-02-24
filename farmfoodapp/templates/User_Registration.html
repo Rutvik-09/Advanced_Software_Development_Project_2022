@@ -13,6 +13,9 @@
 	<div class="container">
 		<div class="header">
 			<h2>User Registration</h2>
+			{% if msg %}
+			<h3 style="color:red">{{msg}}</h3>
+			{% endif %}
 		</div>
 		<form id="form" class="form" method="POST" action="/register-api/">
 
@@ -21,21 +24,21 @@
 
 				<div class="form-control">
 					<label>First Name</label>
-					<input type="text" id="firstname" />
+					<input type="text" id="firstname" name="first_name" required/>
 					<i class="fas fa-check-circle"></i>
 					<i class="fas fa-exclamation-circle"></i>
 					<small>Error message</small>
 				</div>
 				<div class="form-control">
 					<label>Last Name</label>
-					<input type="text" id="lastname" />
+					<input type="text" id="lastname" name="last_name" required/>
 					<i class="fas fa-check-circle"></i>
 					<i class="fas fa-exclamation-circle"></i>
 					<small>Error message</small>
 				</div>
 				<div class="form-control">
 					<label>Date Of Birth</label>
-					<input type="date" id="dateOfBirth" placeholder="dd/mm/yyyy"/>
+					<input type="date" id="dateOfBirth" placeholder="dd/mm/yyyy" name="date_of_birth" required/>
 					<i class="fas fa-check-circle"></i>
 					<i class="fas fa-exclamation-circle"></i>
 					<small>Error message</small>
@@ -46,7 +49,7 @@
 				<legend>Contact Information:</legend>
 				<div class="form-control">
 					<label>Email</label>
-					<input type="email" id="email"/>
+					<input type="email" id="email" name="email" required/>
 					<i class="fas fa-check-circle"></i>
 					<i class="fas fa-exclamation-circle"></i>
 					<small>Error message</small>
@@ -57,7 +60,7 @@
 					<br>
 					<i class="fas fa-check-circle"></i>
 					<i class="fas fa-exclamation-circle"></i>
-					<select name="CountryCode">
+					<select name="country_code">
 						<option data-CountryCode="CA" value="1" selected>Canada (+1)</option>
 						<optgroup label="Other Countries">
 							<option data-CountryCode="DZ" value="213">Algeria (+213)</option>
@@ -73,7 +76,7 @@
 						</optgroup>
 					</select>
 					<br><br>
-					<input type="tel" id="phonenumber" />
+					<input type="tel" id="phonenumber" name="phone" required/>
 					<small>Error message</small>
 				</div>
 			</fieldset> <br><br>
@@ -82,14 +85,14 @@
 
 			<div class="form-control">
 				<label>Password</label>
-				<input type="password" id="password" />
+				<input type="password" id="password" name="user_password" required/>
 				<i class="fas fa-check-circle"></i>
 				<i class="fas fa-exclamation-circle"></i>
 				<small>Error message</small>
 			</div>
 			<div class="form-control">
 				<label>Confirm Pasword</label>
-				<input type="password"  id="password2" />
+				<input type="password"  id="password2" name="user_password_cnf" required/>
 				<i class="fas fa-check-circle"></i>
 				<i class="fas fa-exclamation-circle"></i>
 				<small>Error message</small>
@@ -97,10 +100,10 @@
 
 			</fieldset>
 
-			<button>Submit</button>
+			<button type="submit">Submit</button>
 		</form>
 	</div>
-	<script type="text/javascript" src="{% static 'js/User_Reg_Validations.js' %}"></script>
+<!--	<script type="text/javascript" src="{% static 'js/User_Reg_Validations.js' %}"></script>-->
 </body>
 
 </html>

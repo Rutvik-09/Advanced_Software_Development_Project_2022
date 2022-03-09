@@ -47,6 +47,9 @@
   tags:
     - dalfcs_gitlab_docker_ci
 
+  environment:
+    name: production
+    url: $HEROKU_APP_HOST
 
 
 variables:

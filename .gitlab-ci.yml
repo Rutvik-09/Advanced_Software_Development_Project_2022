@@ -85,7 +85,7 @@ default:
 #    - flake8
 
 Deployment:
-  image: ruby:2.4
+  image: ruby:2.6
   stage: deploy
   before_script:
     - gem install dpl

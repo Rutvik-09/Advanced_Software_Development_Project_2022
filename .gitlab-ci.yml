@@ -95,4 +95,4 @@ Deployment:
     - heroku run --app $HEROKU_APPNAME_VINAY python manage.py migrate
   environment:
     name: production
-    url: $HEROKU_APP_HOST
+    url: $HEROKU_APP_HOST_VINAY

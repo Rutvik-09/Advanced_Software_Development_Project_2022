@@ -33,11 +33,11 @@ stages:
   - deploy_develop
 
 deploy_develop:
-    image: ruby:2.4
-    stage: deploy
-    before_script:
-      - gem install dpl
-      - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+   image: ruby:2.4
+   stage: deploy
+   before_script:
+     - gem install dpl
+     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
   tags:
     - dalfcs_gitlab_docker_ci

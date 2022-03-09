@@ -29,28 +29,11 @@
 # .gitlab-ci.yml are passed to the service and variables defined in the GitLab UI are not.
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
- stages:
-  - deploy_develop
-
-
- deploy_develop:
-  image: ruby:2.4
-  stage: deploy_develop
-  before_script:
-    - gem install dpl
-    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-  script:
-    - heroku run --app $HEROKU_APPNAME python pip install -r requirements.txt
-    - heroku run --app $HEROKU_APPNAME python manage.py migrate
-    - dpl --provider=heroku --app=$HEROKU_NAME_DEV  --api-key=$HEROKU_API_KEY
-
-  tags:
-    - dalfcs_gitlab_docker_ci
-
-  environment:
-    name: production
-    url: $HEROKU_APP_HOST
-
+stages:
+#  - build
+  - deploy
+#  - test
+#  - code_quality
 
 variables:
   # DJANGO_CONFIG: "test"
@@ -82,20 +65,35 @@ default:
     - pip3 install -r requirements.txt
 
 
-migrations:
-  stage: build
-  script:
-    - python3 manage.py makemigrations
-    - python3 manage.py makemigrations farmfoodapp
-    - python3 manage.py migrate
-    - python3 manage.py check
+#migrations:
+#  stage: build
+#  script:
+#    - python3 manage.py makemigrations
+#    - python3 manage.py makemigrations farmfoodapp
+#    - python3 manage.py migrate
+#    - python3 manage.py check
+#
 
-test_case:
-  stage: test
-  script:
-    - python3 manage.py test farmfoodapp
+#test_case:
+#  stage: test
+#  script:
+#    - python3 manage.py test farmfoodapp
+#
+#code_quality:
+#  stage: code_quality
+#  script:
+#    - flake8
 
-code_quality:
-  stage: code_quality
+Deployment:
+  image: ruby:2.6
+  stage: deploy
+  before_script:
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
-    - flake8
+    - dpl --provider=heroku --app=$HEROKU_APPNAME_Jenish --api-key=$HEROKU_APIKEY_Jenish
+    - export HEROKU_API_KEY=$HEROKU_APIKEY_Jenish
+    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py migrate
+  environment:
+    name: production
+    url: $HEROKU_APP_HOST_Jenish

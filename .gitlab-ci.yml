@@ -30,21 +30,23 @@
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
 stages:
-  - deploy_develop
+  - deploy
 
-deploy_develop:
-   image: ruby:2.4
-   stage: deploy
-   before_script:
-     - gem install dpl
-     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
-  tags:
-    - dalfcs_gitlab_docker_ci
+Deployment:
+  image: ruby:2.4
+  stage: deploy
+  before_script:
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
     - heroku run --app $HEROKU_APPNAME python pip install -r requirements.txt
     - heroku run --app $HEROKU_APPNAME python manage.py migrate
     - dpl --provider=heroku --app=$HEROKU_NAME_DEV  --api-key=$HEROKU_API_KEY
+
+  tags:
+    - dalfcs_gitlab_docker_ci
+
 
 
 variables:

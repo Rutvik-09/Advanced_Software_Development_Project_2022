@@ -73,6 +73,7 @@ default:
 #    - python3 manage.py migrate
 #    - python3 manage.py check
 #
+
 #test_case:
 #  stage: test
 #  script:

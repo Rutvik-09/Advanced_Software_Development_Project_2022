@@ -30,12 +30,12 @@
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
 stages:
-  - deploy
+  - deploy_develop
 
 
-Deployment:
+ deploy_develop:
   image: ruby:2.4
-  stage: deploy
+  stage: deploy_develop
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh

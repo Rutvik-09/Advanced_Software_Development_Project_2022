@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/UI.css' %}">
+    <title>Login Page</title>
+
+</head>
+
+<body>
+<div class="container">
+    <form id="form" class="form" action="/login-api/" method="POST">
+        <fieldset>
+            <legend>User Login</legend>
+            {% if msg %}
+            <h3 style="color:red">{{msg}}</h3>
+            {% endif %}
+
+            <div class="form-control">
+                <label>Email</label>
+                <input type="email" id="email" name="email" required/>
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <small>Error message</small>
+            </div>
+
+            <div class="form-control">
+                <label>Password</label>
+                <input type="password" id="password" name="user_password" required/>
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <small>Error message</small>
+            </div>
+        </fieldset>
+        <br>
+
+        <button>Login</button>
+        <p><a href="/register">Not a User? Sign up!</a></p>
+        <p><a href="/forget-password">Forgot Password!</a></p>
+    </form>
+</div>
+<!--	<script type="text/javascript" src="{% static 'js/User_Login_Validations.js' %}"></script>-->
+</body>
+
+</html>

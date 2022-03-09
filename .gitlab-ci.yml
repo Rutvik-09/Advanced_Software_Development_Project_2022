@@ -97,3 +97,4 @@ Deployment:
   environment:
     name: production
     url: $HEROKU_APP_HOST_Jenish
+    MYSQL_ROOT_PASSWORD:1

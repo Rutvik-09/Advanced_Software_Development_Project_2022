@@ -62,7 +62,8 @@ default:
     - apt -y install net-tools python3.8 python3-pip mysql-client libmysqlclient-dev
     - apt -y upgrade
     - pip3 install -r requirements.txt
-
+    - python3 -m pip install --upgrade pip
+    - pip install -r build_req.txt
 
 migrations:
   stage: build

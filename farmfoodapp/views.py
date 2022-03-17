@@ -8,9 +8,9 @@ from django.urls import reverse
 # from rest_framework.response import Response
 from farmfoodapp.models import RegisterModel
 from farmfoodapp.app_serializers import RegisterSerializer
-from farmfoodapp.actions import check_existing_user, check_login_attempts, reduce_login_attempts, decode_token, \
-    send_verification_email, send_forget_pass_email
+from farmfoodapp.actions import check_existing_user, check_login_attempts, reduce_login_attempts, decode_token, send_verification_email, send_forget_pass_email
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 utc = pytz.UTC
 
@@ -133,3 +133,10 @@ def verify_reg_email(request, token):
             return HttpResponse("<h2>Invalid URL</h2>")
     else:
         return HttpResponse("METHOD NOT ALLOWED")
+
+
+@api_view(['GET'])
+def test_api(request):
+    data = request.data
+    print(data)
+    return Response(data={"msg":"success"})

@@ -27,3 +27,12 @@ class RegisterSerializer(serializers.Serializer):
         instance.lock = validated_data.get('lock', instance.lock)
         instance.save()
         return instance
+
+
+# class UserPreferenceSer(serializers.Serializer):
+#     user = serializers.PrimaryKeyRelatedField(queryset=RegisterModel.objects.all())
+#     pref_fruits = serializers.BooleanField(default=False)
+#     pref_veg = serializers.BooleanField(default=False)
+#     pref_sea = serializers.BooleanField(default=False)
+#     pref_meat = serializers.BooleanField(default=False)
+#     pref_organic = serializers.BooleanField(default=False)

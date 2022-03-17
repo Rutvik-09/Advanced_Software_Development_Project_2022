@@ -17,3 +17,4 @@ class RegisterModel(models.Model):
     attempts_left = models.IntegerField(default=10)
     lock = models.DateTimeField(default=datetime.datetime.now())
     account_status = models.CharField(max_length=100, default="inactive")
+    is_farmer = models.BooleanField(default=False)

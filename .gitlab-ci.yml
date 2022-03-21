@@ -33,6 +33,7 @@ stages:
   - build
   - test
   - code_quality
+  - deploy
 
 variables:
   # DJANGO_CONFIG: "test"
@@ -61,7 +62,8 @@ default:
     - apt -y install apt-utils
     - apt -y install net-tools python3.8 python3-pip mysql-client libmysqlclient-dev
     - apt -y upgrade
-    - pip3 install -r requirements.txt
+    - python3 -m pip install --upgrade pip
+    - pip3 install -r build_req.txt
 
 
 migrations:
@@ -72,6 +74,7 @@ migrations:
     - python3 manage.py migrate
     - python3 manage.py check
 
+
 test_case:
   stage: test
   script:
@@ -81,3 +84,17 @@ code_quality:
   stage: code_quality
   script:
     - flake8
+
+Deployment:
+  image: ruby:2.6
+  stage: deploy
+  before_script:
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APPNAME_VINAY --api-key=$HEROKU_APIKEY_VINAY
+    - export HEROKU_API_KEY=$HEROKU_APIKEY_VINAY
+    - heroku run --app $HEROKU_APPNAME_VINAY python manage.py migrate
+  environment:
+    name: production
+    url: $HEROKU_APP_HOST_VINAY

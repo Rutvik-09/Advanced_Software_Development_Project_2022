@@ -84,7 +84,6 @@ def login_view(request):
         return render(request, 'onboarding/User_Login.html', msg)
     return render(request, 'onboarding/User_Login.html')
 
-
 def home_page(request):
     if "login_session_data" in request.session:
         print(request.session["login_session_data"])
@@ -149,5 +148,21 @@ def reset_password_api(request):
             return HttpResponseRedirect(reverse('login-view'))
         else:
             return render(request, 'onboarding/User_ResetPassword.html', {"msg": "Passwords Dont Match"})
+    else:
+        return HttpResponse("METHOD NOT ALLOWED")
+
+
+def verify_reg_email(request, token):
+    if request.method == "GET":
+        result, data = decode_token(token)
+        if result:
+            user = RegisterModel.objects.get(email=data['email'])
+            user.account_status = "active"
+            user.attempts_left = 10
+            user.save()
+            request.session["msg"] = "Account Successfully Verified"
+            return HttpResponseRedirect(reverse('login-view'))
+        else:
+            return HttpResponse("<h2>Invalid URL</h2>")
     else:
         return HttpResponse("METHOD NOT ALLOWED")

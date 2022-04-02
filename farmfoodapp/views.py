@@ -84,6 +84,7 @@ def login_view(request):
         return render(request, 'onboarding/User_Login.html', msg)
     return render(request, 'onboarding/User_Login.html')
 
+
 def home_page(request):
     if "login_session_data" in request.session:
         print(request.session["login_session_data"])
@@ -102,6 +103,7 @@ def home_page(request):
     else:
         return HttpResponseRedirect(reverse('login-view'))
 
+
 @api_view(['GET', 'POST'])
 def forget_password_view(request):
     if request.method == "GET":
@@ -119,3 +121,15 @@ def forget_password_view(request):
             }
             send_forget_pass_email(payload, user.email)
         return HttpResponse("<h1>Please Check Your Email for the RESET URL</h1>")
+
+
+def reset_password_view(request, token):
+    if request.method == "GET":
+        result, data = decode_token(token)
+        if result:
+            request.session["data"] = data
+            return render(request, 'onboarding/User_ResetPassword.html')
+        else:
+            return HttpResponse("INVALID URL")
+    else:
+        return HttpResponse("METHOD NOT ALLOWED")

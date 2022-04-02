@@ -14,4 +14,5 @@ urlpatterns = [
     path('', views.home_page, name="home-page"),
     path('add-product/', views.add_product_view, name="add-product"),
     path('onboard-vendor/', views.onboard_vendor_view_api, name="onboard-vendor"),
+    path('view-products/', views.view_products, name="view_products"),
 ]

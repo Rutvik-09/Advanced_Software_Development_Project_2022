@@ -208,3 +208,17 @@ def onboard_vendor_view_api(request):
             reg_obj.is_farmer = True
             reg_obj.save()
             return HttpResponse("SUCCESS")
+
+def view_products(request):
+    if "login_session_data" in request.session:
+        login_data = request.session["login_session_data"]
+        reg_data = VendorProduct.objects.filter(user_id=login_data["id"])
+        json_data = [{
+            "product_name": i.product_name,
+            "category": i.category,
+            "description": i.description,
+            "price": float("{:.2f}".format(i.price)),
+            "id": i.id
+        }
+            for i in reg_data]
+        return render(request, 'products/View_Product_Page.html', {"data": json_data})

@@ -133,3 +133,21 @@ def reset_password_view(request, token):
             return HttpResponse("INVALID URL")
     else:
         return HttpResponse("METHOD NOT ALLOWED")
+
+
+@api_view(['POST'])
+def reset_password_api(request):
+    if request.method == "POST" and "data" in request.session:
+        user_pass = request.data
+        if user_pass["user_password"] == user_pass["user_password_cnf"]:
+            data = request.session["data"]
+            user = RegisterModel.objects.get(email=data['email'])
+            user.user_password = make_password(user_pass['user_password'])
+            user.save()
+            del request.session["data"]
+            request.session["msg"] = "Password Reset Successful, Please Login"
+            return HttpResponseRedirect(reverse('login-view'))
+        else:
+            return render(request, 'onboarding/User_ResetPassword.html', {"msg": "Passwords Dont Match"})
+    else:
+        return HttpResponse("METHOD NOT ALLOWED")

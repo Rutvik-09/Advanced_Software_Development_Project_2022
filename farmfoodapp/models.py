@@ -17,3 +17,34 @@ class RegisterModel(models.Model):
     attempts_left = models.IntegerField(default=10)
     lock = models.DateTimeField(default=datetime.datetime.now())
     account_status = models.CharField(max_length=100, default="inactive")
+    is_farmer = models.BooleanField(default=False)
+
+
+class VendorManager(models.Model):
+    user = models.ForeignKey(RegisterModel, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    market_name = models.CharField(max_length=100)
+    address = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+
+class VendorProduct(models.Model):
+    user_id = models.ForeignKey(RegisterModel, on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=200)
+    category = models.CharField(max_length=100)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=15, decimal_places=10)
+    image = models.ImageField(upload_to="static/Images/product")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+
+class VendorInventory(models.Model):
+    user_id = models.ForeignKey(RegisterModel, on_delete=models.CASCADE)
+    item_name = models.CharField(max_length=200)
+    category = models.CharField(max_length=100)
+    description = models.TextField()
+    quantity = models.DecimalField(max_digits=15, decimal_places=10)
+    unit = models.CharField(max_length=10)

@@ -53,7 +53,7 @@ def decode_token(token):
         data = jwt.decode(token, "group13secret", algorithms=["HS256"])
         return True, data
     except Exception:
-        return False
+        return False, {"msg": "Failed"}
 
 
 def send_forget_pass_email(payload, email):
@@ -61,8 +61,8 @@ def send_forget_pass_email(payload, email):
     url = "http://localhost:8000/reset/" + token
     subject = "Farm n Food - Reset Password"
     body = f"""
-        <h2>You or Someone has Requested to Reset Your Password</h1>
-        <h3>Please Click on the below URL to Reset Password</h3>
+        You or Someone has Requested to Reset Your Password
+        Please Click on the below URL to Reset Password
         {url}
         """
     send_email(subject, body, email)
@@ -74,8 +74,8 @@ def send_verification_email(payload, email):
     url = "http://localhost:8000/verify/" + token
     subject = "Farm n Food - Verify Email"
     body = f"""
-    <h2>Please Verify Your Email </h1>
-    <h3>Please Click on the below URL to Verify</h3>
+    Please Verify Your Email
+    Please Click on the below URL to Verify
     {url}
     """
     send_email(subject, body, email)

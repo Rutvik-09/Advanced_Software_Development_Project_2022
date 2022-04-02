@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from farmfoodapp.models import RegisterModel
+from farmfoodapp.models import RegisterModel, VendorProduct
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -27,3 +27,14 @@ class RegisterSerializer(serializers.Serializer):
         instance.lock = validated_data.get('lock', instance.lock)
         instance.save()
         return instance
+
+
+class VendorProductSer(serializers.Serializer):
+    product_name = serializers.CharField(max_length=200)
+    category = serializers.CharField(max_length=100)
+    description = serializers.CharField()
+    price = serializers.IntegerField()
+    image = serializers.ImageField()
+
+    def create(self, validated_data):
+        return VendorProduct.objects.get(**validated_data)

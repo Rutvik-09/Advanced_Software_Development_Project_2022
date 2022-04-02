@@ -7,3 +7,4 @@ pyjwt
 whitenoise
 gunicorn
 dj-database-url
+Pillow

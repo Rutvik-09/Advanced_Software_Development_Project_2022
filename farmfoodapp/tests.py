@@ -20,3 +20,8 @@ class RegisterModelTest(SimpleTestCase):
         client = Client()
         response = client.get('/forget-password/')
         self.assertEqual(response.status_code, 200)
+
+    def test_login_api(self):
+        client = Client()
+        response = client.get('/login-api/')
+        self.assertEqual(response.status_code, 200)

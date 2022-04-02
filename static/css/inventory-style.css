@@ -1,0 +1,9 @@
+body{
+    background: linear-gradient(135deg, rgb(193, 195, 240) 0%, rgb(181, 219, 245) 100%);
+    background-attachment: fixed; 
+}
+
+form label {
+    font-size: 18px;
+    font-weight: 500;
+}

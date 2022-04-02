@@ -1,4 +1,6 @@
 const email = document.getElementById('email');
+const form = document.getElementById('form');
+
 
 form.addEventListener('submit', e => {
 	e.preventDefault();
@@ -11,6 +13,8 @@ function checkInputs() {
 
 	if(emailValue === '') {
 		setErrorFor(email, 'Email cannot be blank');
+	} else if (!isEmail(emailValue)) {
+		setErrorFor(email, 'Not a valid email');
 	} else {
 		setSuccessFor(email);
 	}
@@ -28,6 +32,6 @@ function setSuccessFor(input) {
 	formControl.className = 'form-control success';
 }
 	
-function isEmail(email) {
+function isEmail(email, message) {
 	return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 }

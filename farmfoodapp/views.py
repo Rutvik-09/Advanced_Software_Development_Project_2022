@@ -309,3 +309,10 @@ def view_inventory(request):
                 for x in data
             ]
             return render(request, 'inventory/View_Inventory_Page.html', {"data": data_list})
+
+def delete_inventory(request, in_id):
+    if request.method == "GET":
+        if "login_session_data" in request.session:
+            data = VendorInventory.objects.get(id=in_id)
+            data.delete()
+            return HttpResponseRedirect(reverse('view-inventory'))

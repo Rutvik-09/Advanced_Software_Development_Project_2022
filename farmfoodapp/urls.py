@@ -20,5 +20,6 @@ urlpatterns = [
     # path('product/<int:prod_id>', views.view_product, name="view=product"),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('add-inventory/', views.add_inventory, name="add-inventory"),
-path('view-inventory/', views.view_inventory, name="view-inventory"),
+    path('view-inventory/', views.view_inventory, name="view-inventory"),
+    path('delete-inventory/<int:in_id>', views.delete_inventory, name="delete-inventory"),
 ]

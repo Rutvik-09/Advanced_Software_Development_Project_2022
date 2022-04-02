@@ -222,3 +222,28 @@ def view_products(request):
         }
             for i in reg_data]
         return render(request, 'products/View_Product_Page.html', {"data": json_data})
+
+
+@api_view(["GET", "POST"])
+def edit_product(request, prod_id):
+    if "login_session_data" in request.session:
+        if request.method == "GET":
+            data = VendorProduct.objects.get(id=prod_id)
+            p_id = data.id
+            ser = VendorProductSer(data)
+            data = ser.data
+            data["id"] = p_id
+            return render(request, "products/Edit_Product.html", data)
+        if request.method == "POST":
+            data = request.data
+            obj = VendorProduct.objects.get(id=prod_id)
+            obj.product_name = data['product_name']
+            obj.category = data['category']
+            obj.description = data['description']
+            obj.price = data['price']
+            if data["image"] == "":
+                obj.save()
+            else:
+                obj.image = data['image']
+                obj.save()
+            return HttpResponseRedirect(reverse('view_products'))

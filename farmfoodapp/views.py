@@ -316,3 +316,27 @@ def delete_inventory(request, in_id):
             data = VendorInventory.objects.get(id=in_id)
             data.delete()
             return HttpResponseRedirect(reverse('view-inventory'))
+
+@api_view(["GET", "POST"])
+def edit_inventory(request, in_id):
+    if request.method == "GET":
+        if "login_session_data" in request.session:
+            data = VendorInventory.objects.get(id=in_id)
+            data_dict = {"id": data.id,
+                         "item_name": data.item_name,
+                         "category": data.category,
+                         "description": data.description,
+                         "quantity": float("{:.2f}".format(data.quantity)),
+                         "unit": data.unit}
+            return render(request, 'inventory/Edit_Inventory.html', data_dict)
+    if request.method == "POST":
+        if "login_session_data" in request.session:
+            data = request.data
+            obj = VendorInventory.objects.get(id=in_id)
+            obj.item_name = data['item_name']
+            obj.category = data['category']
+            obj.description = data['description']
+            obj.quantity = data['quantity']
+            obj.unit = data['unit']
+            obj.save()
+            return HttpResponseRedirect(reverse('view-inventory'))

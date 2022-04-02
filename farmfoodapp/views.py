@@ -362,3 +362,7 @@ def test_post_api(request):
     data = request.data
     print(data)
     return Response(data={"name": "Hello " + data["name"]}, status=status.HTTP_200_OK)
+
+def logout_session(request):
+    del request.session["login_session_data"]
+    return HttpResponseRedirect(reverse('login-view'))

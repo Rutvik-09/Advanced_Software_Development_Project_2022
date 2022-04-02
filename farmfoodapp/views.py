@@ -166,3 +166,22 @@ def verify_reg_email(request, token):
             return HttpResponse("<h2>Invalid URL</h2>")
     else:
         return HttpResponse("METHOD NOT ALLOWED")
+
+@api_view(['GET', 'POST'])
+def add_product_view(request):
+    if request.method == 'GET':
+        if "login_session_data" in request.session:
+            return render(request, 'products/Add_Product.html')
+    if request.method == "POST":
+        if "login_session_data" in request.session:
+            user_data = request.data
+            print(user_data)
+            login_data = request.session["login_session_data"]
+            vp_obj = VendorProduct(user_id=RegisterModel.objects.get(id=login_data["id"]),
+                                   product_name=user_data["product_name"],
+                                   category=user_data["category"],
+                                   description=user_data["description"],
+                                   price=user_data["price"],
+                                   image=user_data["image"])
+            vp_obj.save()
+            return HttpResponse("SUCCESS")

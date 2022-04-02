@@ -340,3 +340,18 @@ def edit_inventory(request, in_id):
             obj.unit = data['unit']
             obj.save()
             return HttpResponseRedirect(reverse('view-inventory'))
+
+def show_category(request, cat):
+    if "login_session_data" in request.session:
+        data = VendorProduct.objects.filter(category=cat)
+        data_list = [{
+            "id": prod.id,
+            "product_name": prod.product_name,
+            "category": prod.category,
+            "description": prod.description,
+            "price": float("{:.2f}".format(prod.price)),
+            "image": prod.image
+        } for prod in data]
+        return render(request, 'home/Get_Category.html', {"products": data_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))

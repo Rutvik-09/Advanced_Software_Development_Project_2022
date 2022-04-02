@@ -83,3 +83,21 @@ def login_view(request):
         del request.session["msg"]
         return render(request, 'onboarding/User_Login.html', msg)
     return render(request, 'onboarding/User_Login.html')
+
+def home_page(request):
+    if "login_session_data" in request.session:
+        print(request.session["login_session_data"])
+        data = VendorProduct.objects.all()
+        data_list = [{
+            "id": prod.id,
+            "product_name": prod.product_name,
+            "category": prod.category,
+            "description": prod.description,
+            "price": float("{:.2f}".format(prod.price)),
+            "image": prod.image
+        } for prod in data]
+        print(data_list)
+        return render(request, 'home/HomePage.html',
+                      {"products": data_list, "first_name": request.session["login_session_data"]["first_name"]})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))

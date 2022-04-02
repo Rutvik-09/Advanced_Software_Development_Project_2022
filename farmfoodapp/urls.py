@@ -11,5 +11,6 @@ urlpatterns = [
     path('reset/<str:token>', views.reset_password_view, name='reset-password'),
     path('verify/<str:token>', views.verify_reg_email, name="verify_reg_email"),
     path('reset-password-api/', views.reset_password_api, name="reset-password-api"),
+    path('', views.home_page, name="home-page"),
 
 ]

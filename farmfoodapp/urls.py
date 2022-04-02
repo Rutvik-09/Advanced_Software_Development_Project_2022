@@ -13,5 +13,5 @@ urlpatterns = [
     path('reset-password-api/', views.reset_password_api, name="reset-password-api"),
     path('', views.home_page, name="home-page"),
     path('add-product/', views.add_product_view, name="add-product"),
-
+    path('onboard-vendor/', views.onboard_vendor_view_api, name="onboard-vendor"),
 ]

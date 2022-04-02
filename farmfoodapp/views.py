@@ -185,3 +185,26 @@ def add_product_view(request):
                                    image=user_data["image"])
             vp_obj.save()
             return HttpResponse("SUCCESS")
+
+@api_view(['GET', 'POST'])
+def onboard_vendor_view_api(request):
+    if request.method == "GET":
+        if "login_session_data" in request.session:
+            return render(request, 'onboarding/VendorOnboarding.html')
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
+    if request.method == "POST":
+        if "login_session_data" in request.session:
+            user_data = request.data
+            login_data = request.session["login_session_data"]
+            vendor_obj = VendorManager(user=RegisterModel.objects.get(id=login_data["id"]),
+                                       company_name=user_data["company_name"],
+                                       location=user_data["location"],
+                                       market_name=user_data['market_name'],
+                                       address=user_data["address"])
+            vendor_obj.save()
+
+            reg_obj = RegisterModel.objects.get(id=login_data["id"])
+            reg_obj.is_farmer = True
+            reg_obj.save()
+            return HttpResponse("SUCCESS")

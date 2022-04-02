@@ -271,3 +271,23 @@ def dashboard(request):
         return render(request, 'home/Farmer_Dashboard.html')
     else:
         return HttpResponseRedirect(reverse('login-view'))
+
+@api_view(["GET", "POST"])
+def add_inventory(request):
+    if request.method == "GET":
+        if "login_session_data" in request.session:
+            return render(request, 'inventory/Add_Inventory.html')
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
+    if request.method == "POST":
+        if "login_session_data" in request.session:
+            data = request.data
+            login_data = request.session["login_session_data"]
+            a = VendorInventory(user_id=RegisterModel.objects.get(id=login_data["id"]),
+                                item_name=data['item_name'],
+                                category=data['category'],
+                                description=data['description'],
+                                quantity=data['quantity'],
+                                unit=data['unit'])
+            a.save()
+            return HttpResponseRedirect(reverse('view-inventory'))

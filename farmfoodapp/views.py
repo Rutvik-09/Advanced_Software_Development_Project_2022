@@ -291,3 +291,21 @@ def add_inventory(request):
                                 unit=data['unit'])
             a.save()
             return HttpResponseRedirect(reverse('view-inventory'))
+
+
+@api_view(["GET", "POST"])
+def view_inventory(request):
+    if request.method == "GET":
+        if "login_session_data" in request.session:
+            login_data = request.session["login_session_data"]
+            data = VendorInventory.objects.filter(user_id=login_data["id"])
+            data_list = [
+                {"id": x.id,
+                 "item_name": x.item_name,
+                 "category": x.category,
+                 "description": x.description,
+                 "quantity": float("{:.2f}".format(x.quantity)),
+                 "unit": x.unit}
+                for x in data
+            ]
+            return render(request, 'inventory/View_Inventory_Page.html', {"data": data_list})

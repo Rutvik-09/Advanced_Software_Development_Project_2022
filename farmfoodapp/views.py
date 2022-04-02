@@ -101,3 +101,21 @@ def home_page(request):
                       {"products": data_list, "first_name": request.session["login_session_data"]["first_name"]})
     else:
         return HttpResponseRedirect(reverse('login-view'))
+
+@api_view(['GET', 'POST'])
+def forget_password_view(request):
+    if request.method == "GET":
+        return render(request, 'onboarding/User_ForgetPassword.html')
+    if request.method == "POST":
+        data = request.data
+        user_count = RegisterModel.objects.filter(email=data['email']).count()
+        if user_count == 0:
+            return render(request, 'onboarding/User_ForgetPassword.html', {"msg": "User Does Not Exist"})
+        else:
+            user = RegisterModel.objects.get(email=data['email'])
+            payload = {
+                'email': user.email,
+                'phone': user.phone,
+            }
+            send_forget_pass_email(payload, user.email)
+        return HttpResponse("<h1>Please Check Your Email for the RESET URL</h1>")

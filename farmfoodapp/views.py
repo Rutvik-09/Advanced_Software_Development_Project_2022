@@ -265,3 +265,9 @@ def delete_product(request, prod_id):
 #         return HttpResponse("SUCCESS")
 #     else:
 #         HttpResponse("NOT ALLOWED")
+
+def dashboard(request):
+    if "login_session_data" in request.session:
+        return render(request, 'home/Farmer_Dashboard.html')
+    else:
+        return HttpResponseRedirect(reverse('login-view'))

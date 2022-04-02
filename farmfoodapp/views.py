@@ -355,3 +355,10 @@ def show_category(request, cat):
         return render(request, 'home/Get_Category.html', {"products": data_list})
     else:
         return HttpResponseRedirect(reverse('login-view'))
+
+
+@api_view(["POST"])
+def test_post_api(request):
+    data = request.data
+    print(data)
+    return Response(data={"name": "Hello " + data["name"]}, status=status.HTTP_200_OK)

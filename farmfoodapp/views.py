@@ -247,3 +247,21 @@ def edit_product(request, prod_id):
                 obj.image = data['image']
                 obj.save()
             return HttpResponseRedirect(reverse('view_products'))
+
+def delete_product(request, prod_id):
+    if "login_session_data" in request.session:
+        data = VendorProduct.objects.get(id=prod_id)
+        data.delete()
+        return HttpResponseRedirect(reverse('view_products'))
+
+
+# def view_product(request, prod_id):
+#     if "login_session_data" in request.session:
+#         # print(prod_id)
+#         # data = VendorProduct.objects.get(id=prod_id)
+#         # theID = data.user_id.id
+#         # data2 = RegisterModel.objects.get(id=theID)
+#         # data3 = VendorManager.objects.get(user=data2)
+#         return HttpResponse("SUCCESS")
+#     else:
+#         HttpResponse("NOT ALLOWED")

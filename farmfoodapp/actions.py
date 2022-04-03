@@ -80,3 +80,15 @@ def send_verification_email(payload, email):
     """
     send_email(subject, body, email)
     return True
+
+
+def make_data_dict(prod):
+    data_dict = {
+        "id": prod.id,
+        "product_name": prod.product_name,
+        "category": prod.category,
+        "description": prod.description,
+        "price": float("{:.2f}".format(prod.price)),
+        "image": prod.image
+    }
+    return data_dict

@@ -17,12 +17,15 @@ urlpatterns = [
     path('view-products/', views.view_products, name="view_products"),
     path('edit/<int:prod_id>', views.edit_product, name="edit-product"),
     path('delete/<int:prod_id>', views.delete_product, name="delete-product"),
-    # path('product/<int:prod_id>', views.view_product, name="view=product"),
+    path('product/<int:prod_id>', views.view_product, name="view=product"),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('add-inventory/', views.add_inventory, name="add-inventory"),
     path('view-inventory/', views.view_inventory, name="view-inventory"),
     path('delete-inventory/<int:in_id>', views.delete_inventory, name="delete-inventory"),
     path('edit-inventory/<int:in_id>', views.edit_inventory, name="edit-inventory"),
-    path('test-api/', views.test_post_api),
-    path('logout/', views.logout_session)
+    path('category/<str:cat>', views.show_category),
+    path('logout/', views.logout_session),
+    path('search-api/', views.search_api, name="search-api"),
+    path('search/<str:search_term>', views.search_view, name="search-view")
+
 ]

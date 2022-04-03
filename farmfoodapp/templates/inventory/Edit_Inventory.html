@@ -22,21 +22,42 @@
     <header class="section-header">
         <section class="header-main border-bottom bg-white">
             <div class="container-fluid">
-                <div class="row p-2 pt-3 pb-3 d-flex align-items-center">
-                    <div class="col-md-2"> <img  class="d-none d-md-flex" src="{% static 'Images/Logo_1.png' %}" width="100"> </div>
-                    <div class="col-md-8">
-                        <div class="d-flex form-inputs"> <input class="form-control" type="text" placeholder="Search any product..."> <i class="bx bx-search"></i> </div>
-                    </div>
-                    <div class="col-md-2">
-                        <ul class="navbar-nav d-flex align-items-center">
-                            <li class="nav-item">
-                                <div class="d-flex flex-row"> <img src="{% static 'Images/profile_image.JPG' %}" class="rounded-circle" width="30"> </div>
-                            </li>
-                            <li class="nav-item"> <a href="#" class="nav-link d-flex align-items-center" data-abc="true"><span>Nantano M</span><i class='bx bxs-chevron-down'></i></a> </li>
-                        </ul>
-                    </div>
+            <div class="row p-2 pt-3 pb-3 d-flex align-items-center">
+                <div class="col-md-2"><img src="{% static 'Images/Logo_1.png' %}" width="150"></div>
+                <div class="col-md-8">
+                    <div class="d-flex form-inputs"><input class="form-control" type="text"
+                                                           placeholder="Search any product..."> <i
+                            class="bx bx-search"></i></div>
+                </div>
+                <div class="col-md-2">
+                    <ul class="navbar-nav d-flex align-items-center">
+
+                        <div class="dropdown">
+                            <div>
+
+                                <li class="nav-item">
+                                    <div class="d-flex flex-row"><img src="{% static 'Images/profile_image.JPG' %}"
+                                                                      class="rounded-circle" width="70"></div>
+                                </li>
+                                <li class="nav-item"><a href="#" class="nav-link d-flex align-items-center"
+                                                        data-abc="true" id="menu1"
+                                                        data-toggle="dropdown"><span>Functions</span><i
+                                        class='bx bxs-chevron-down'></i></a></li>
+
+                            </div>
+
+                            <div class="dropdown-content" style="background-color:salmon;">
+                                <a href="/">Home</a>
+                                <a href="/view-inventory">View Inventory</a>
+                                <a href="/view-products">View Products</a>
+                                <a href="/logout">Logout</a>
+                            </div>
+
+                        </div>
+                    </ul>
                 </div>
             </div>
+        </div>
         </section>
         
     </header>

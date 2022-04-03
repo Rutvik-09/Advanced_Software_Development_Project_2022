@@ -10,8 +10,10 @@ from rest_framework.response import Response
 from farmfoodapp.models import RegisterModel, VendorManager, VendorProduct, VendorInventory
 from farmfoodapp.app_serializers import RegisterSerializer, VendorProductSer
 from farmfoodapp.actions import check_existing_user, check_login_attempts, reduce_login_attempts, decode_token, \
-    send_verification_email, send_forget_pass_email
+    send_verification_email, send_forget_pass_email, make_data_dict
 from rest_framework.decorators import api_view
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 
 utc = pytz.UTC
 
@@ -32,9 +34,10 @@ def register_api(request):
         if data_serializer.is_valid():
             data_serializer.save()
             send_verification_email(user_data, user_data['email'])
-            return HttpResponse("<h2>Please Check Your Email to Verify your account</h2>")
+            return render(request, 'success/Page_Success.html',
+                          {"msg": "Please Check Your Account for Activation Link"})
         else:
-            return HttpResponse("SUCCESS")
+            return HttpResponse("Something Went Wrong")
     except Exception as e:
         return render(request, 'User_Registration.html',
                       {"msg": "Something Went Wrong, Try Again in Some Time, " + str(e)})
@@ -84,9 +87,10 @@ def login_view(request):
         return render(request, 'onboarding/User_Login.html', msg)
     return render(request, 'onboarding/User_Login.html')
 
+
 def home_page(request):
     if "login_session_data" in request.session:
-        print(request.session["login_session_data"])
+        isFarmer = RegisterModel.objects.get(email=request.session["login_session_data"]["email"])
         data = VendorProduct.objects.all()
         data_list = [{
             "id": prod.id,
@@ -98,7 +102,8 @@ def home_page(request):
         } for prod in data]
         print(data_list)
         return render(request, 'home/HomePage.html',
-                      {"products": data_list, "first_name": request.session["login_session_data"]["first_name"]})
+                      {"products": data_list, "first_name": request.session["login_session_data"]["first_name"],
+                       "is_farmer": isFarmer.is_farmer})
     else:
         return HttpResponseRedirect(reverse('login-view'))
 
@@ -119,7 +124,8 @@ def forget_password_view(request):
                 'phone': user.phone,
             }
             send_forget_pass_email(payload, user.email)
-        return HttpResponse("<h1>Please Check Your Email for the RESET URL</h1>")
+        return render(request, 'success/Page_Success.html',
+                      {"msg": "Please Check Your Email for the RESET Link"})
 
 
 def reset_password_view(request, token):
@@ -167,6 +173,7 @@ def verify_reg_email(request, token):
     else:
         return HttpResponse("METHOD NOT ALLOWED")
 
+
 @api_view(['GET', 'POST'])
 def add_product_view(request):
     if request.method == 'GET':
@@ -184,13 +191,14 @@ def add_product_view(request):
                                    price=user_data["price"],
                                    image=user_data["image"])
             vp_obj.save()
-            return HttpResponse("SUCCESS")
+            return HttpResponseRedirect(reverse('view_products'))
+
 
 @api_view(['GET', 'POST'])
 def onboard_vendor_view_api(request):
     if request.method == "GET":
         if "login_session_data" in request.session:
-            return render(request, 'onboarding/VendorOnboarding.html')
+            return render(request, 'onboarding/Onboard_Farmer.html')
         else:
             return HttpResponseRedirect(reverse('login-view'))
     if request.method == "POST":
@@ -203,11 +211,11 @@ def onboard_vendor_view_api(request):
                                        market_name=user_data['market_name'],
                                        address=user_data["address"])
             vendor_obj.save()
-
             reg_obj = RegisterModel.objects.get(id=login_data["id"])
             reg_obj.is_farmer = True
             reg_obj.save()
-            return HttpResponse("SUCCESS")
+            return HttpResponseRedirect(reverse('dashboard'))
+
 
 def view_products(request):
     if "login_session_data" in request.session:
@@ -248,6 +256,7 @@ def edit_product(request, prod_id):
                 obj.save()
             return HttpResponseRedirect(reverse('view_products'))
 
+
 def delete_product(request, prod_id):
     if "login_session_data" in request.session:
         data = VendorProduct.objects.get(id=prod_id)
@@ -255,22 +264,36 @@ def delete_product(request, prod_id):
         return HttpResponseRedirect(reverse('view_products'))
 
 
-# def view_product(request, prod_id):
-#     if "login_session_data" in request.session:
-#         # print(prod_id)
-#         # data = VendorProduct.objects.get(id=prod_id)
-#         # theID = data.user_id.id
-#         # data2 = RegisterModel.objects.get(id=theID)
-#         # data3 = VendorManager.objects.get(user=data2)
-#         return HttpResponse("SUCCESS")
-#     else:
-#         HttpResponse("NOT ALLOWED")
+def view_product(request, prod_id):
+    if "login_session_data" in request.session:
+        prod_obj = VendorProduct.objects.get(id=prod_id)
+        isFarmer = RegisterModel.objects.get(email=request.session["login_session_data"]["email"])
+        vendor_obj = VendorManager.objects.get(user=prod_obj.user_id)
+        data_dict = {
+            "product_name": prod_obj.product_name,
+            "category": prod_obj.category,
+            "description": prod_obj.description,
+            "price": float("{:.2f}".format(prod_obj.price)),
+            "image": prod_obj.image,
+            "company_name": vendor_obj.company_name,
+            "location": vendor_obj.location,
+            "market_name": vendor_obj.market_name,
+            "address": vendor_obj.address,
+            "first_name": request.session["login_session_data"]["first_name"],
+            "is_farmer": isFarmer.is_farmer
+        }
+        print(data_dict)
+        return render(request, 'products/View_Product.html', data_dict)
+    else:
+        HttpResponse("NOT ALLOWED")
+
 
 def dashboard(request):
     if "login_session_data" in request.session:
         return render(request, 'home/Farmer_Dashboard.html')
     else:
         return HttpResponseRedirect(reverse('login-view'))
+
 
 @api_view(["GET", "POST"])
 def add_inventory(request):
@@ -310,12 +333,14 @@ def view_inventory(request):
             ]
             return render(request, 'inventory/View_Inventory_Page.html', {"data": data_list})
 
+
 def delete_inventory(request, in_id):
     if request.method == "GET":
         if "login_session_data" in request.session:
             data = VendorInventory.objects.get(id=in_id)
             data.delete()
             return HttpResponseRedirect(reverse('view-inventory'))
+
 
 @api_view(["GET", "POST"])
 def edit_inventory(request, in_id):
@@ -341,8 +366,10 @@ def edit_inventory(request, in_id):
             obj.save()
             return HttpResponseRedirect(reverse('view-inventory'))
 
+
 def show_category(request, cat):
     if "login_session_data" in request.session:
+        isFarmer = RegisterModel.objects.get(email=request.session["login_session_data"]["email"])
         data = VendorProduct.objects.filter(category=cat)
         data_list = [{
             "id": prod.id,
@@ -352,17 +379,56 @@ def show_category(request, cat):
             "price": float("{:.2f}".format(prod.price)),
             "image": prod.image
         } for prod in data]
-        return render(request, 'home/Get_Category.html', {"products": data_list})
+        return render(request, 'home/Get_Category.html',
+                      {"products": data_list, "first_name": isFarmer.first_name, "is_farmer": isFarmer.is_farmer})
     else:
         return HttpResponseRedirect(reverse('login-view'))
 
 
-@api_view(["POST"])
-def test_post_api(request):
-    data = request.data
-    print(data)
-    return Response(data={"name": "Hello " + data["name"]}, status=status.HTTP_200_OK)
-
 def logout_session(request):
     del request.session["login_session_data"]
     return HttpResponseRedirect(reverse('login-view'))
+
+
+@api_view(["POST"])
+def search_api(request):
+    data = request.data
+    return HttpResponseRedirect("/search/" + data["search_query"])
+
+
+def search_view(request, search_term):
+    if "login_session_data" in request.session:
+        isFarmer = RegisterModel.objects.get(email=request.session["login_session_data"]["email"])
+        data_list = []
+        products = VendorProduct.objects.all()
+        for prod in products:
+            if fuzz.ratio(prod.product_name, search_term) > 60:
+                data_dict = make_data_dict(prod)
+                data_list.append(data_dict)
+            elif fuzz.ratio(prod.category, search_term) > 60:
+                data_dict = make_data_dict(prod)
+                data_list.append(data_dict)
+            elif fuzz.ratio(prod.description, search_term) > 60:
+                data_dict = make_data_dict(prod)
+                data_list.append(data_dict)
+
+        if not data_list:
+            vendors = VendorManager.objects.all()
+            for ven in vendors:
+                if fuzz.ratio(ven.company_name.lower(), search_term.lower()) > 60:
+                    ven_products = VendorProduct.objects.filter(user_id=ven.user)
+                    for ven_prods in ven_products:
+                        data_dict = make_data_dict(ven_prods)
+                        data_list.append(data_dict)
+                elif fuzz.ratio(ven.location.lower(), search_term.lower()) > 60:
+                    ven_products = VendorProduct.objects.filter(user_id=ven.user)
+                    for ven_prods in ven_products:
+                        data_dict = make_data_dict(ven_prods)
+                        data_list.append(data_dict)
+                elif fuzz.ratio(ven.market_name.lower(), search_term.lower()) > 60:
+                    ven_products = VendorProduct.objects.filter(user_id=ven.user)
+                    for ven_prods in ven_products:
+                        data_dict = make_data_dict(ven_prods)
+                        data_list.append(data_dict)
+        return render(request, "home/Search.html",
+                      {"products": data_list, "first_name": isFarmer.first_name, "is_farmer": isFarmer.is_farmer})

@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'farmfood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "",
+        'NAME': "CSCI5308_13_PRODUCTION",
         'USER': "CSCI5308_13_PRODUCTION_USER",
-        'PASSWORD': "xoopheutCSCI5308_13_PRODUCTIONah8Sai1o",
+        'PASSWORD': "xoopheutah8Sai1o",
         'HOST': "db-5308.cs.dal.ca",
         'PORT': '3306',
     }

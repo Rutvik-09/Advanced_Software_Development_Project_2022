@@ -59,7 +59,6 @@ default:
       - ~/.cache/pip/
   before_script:
     - apt -y update
-    - sudo apt-get autoremove
     - apt -y install apt-utils
     - apt -y install net-tools python3.8 python3-pip mysql-client libmysqlclient-dev
     - apt -y upgrade
@@ -74,32 +73,32 @@ migrations:
     - python3 manage.py makemigrations farmfoodapp
     - python3 manage.py migrate
     - python3 manage.py check
-#
-#
-#test_case:
-#  stage: test
-#  script:
-#    - python3 manage.py test farmfoodapp
-#
-#code_quality:
-#  stage: code_quality
-#  script:
-#    - flake8
 
-#Deployment:
-#  image: ruby:2.6
-#  stage: deploy
-#  before_script:
-#    - gem install dpl
-#    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-#
-#  script:
-#    - dpl --provider=heroku --app=$HEROKU_APPNAME_Jenish --api-key=$HEROKU_APIKEY_Jenish
-#    - export HEROKU_API_KEY=$HEROKU_APIKEY_Jenish
-#    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py farmfoodapp makemigrations
-#    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py migrate
-#  environment:
-#    name: production
-#    url: $HEROKU_APP_HOST_Jenish
-    #MYSQL_ROOT_PASSWORD:xoopheutah8Sai1o
+
+test_case:
+  stage: test
+  script:
+    - python3 manage.py test farmfoodapp
+
+code_quality:
+  stage: code_quality
+  script:
+    - flake8
+
+Deployment:
+  image: ruby:2.6
+  stage: deploy
+  before_script:
+    - gem install dpl
+    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APPNAME_Jenish --api-key=$HEROKU_APIKEY_Jenish
+    - export HEROKU_API_KEY=$HEROKU_APIKEY_Jenish
+    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py makemigrations farmfoodapp
+    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py migrate
+  environment:
+    name: production
+    url: $HEROKU_APP_HOST_Jenish
+
 

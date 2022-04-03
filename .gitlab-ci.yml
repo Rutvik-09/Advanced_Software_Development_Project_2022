@@ -30,9 +30,9 @@
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
 stages:
-#  - build
-#  - test
-#  - code_quality
+  - build
+  - test
+  - code_quality
   - deploy
 
 variables:
@@ -66,24 +66,24 @@ default:
     - pip3 install -r build_req.txt
 
 
-#migrations:
-#  stage: build
-#  script:
-#    - python3 manage.py makemigrations
-#    - python3 manage.py makemigrations farmfoodapp
-#    - python3 manage.py migrate
-#    - python3 manage.py check
-#
-#
-#test_case:
-#  stage: test
-#  script:
-#    - python3 manage.py test farmfoodapp
-#
-#code_quality:
-#  stage: code_quality
-#  script:
-#    - flake8
+migrations:
+  stage: build
+  script:
+    - python3 manage.py makemigrations
+    - python3 manage.py makemigrations farmfoodapp
+    - python3 manage.py migrate
+    - python3 manage.py check
+
+
+test_case:
+  stage: test
+  script:
+    - python3 manage.py test farmfoodapp
+
+code_quality:
+  stage: code_quality
+  script:
+    - flake8
 
 Deployment:
   image: ruby:2.6

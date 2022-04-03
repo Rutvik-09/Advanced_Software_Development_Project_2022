@@ -15,7 +15,7 @@ from pathlib import Path
 import os
 import dj_database_url
 
-PRODUCTION = os.environ.get('DATABASE_URL') != None
+PRODUCTION = os.environ.get('DATABASE_URL') is not None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,12 +89,23 @@ WSGI_APPLICATION = 'farmfood.wsgi.application'
 #         'PORT': '3306',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': "CSCI5308_13_PRODUCTION",
+#         'USER': "CSCI5308_13_PRODUCTION_USER",
+#         'PASSWORD': "xoopheutah8Sai1o",
+#         'HOST': "db-5308.cs.dal.ca",
+#         'PORT': '3306',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "CSCI5308_13_PRODUCTION",
-        'USER': "CSCI5308_13_PRODUCTION_USER",
-        'PASSWORD': "xoopheutah8Sai1o",
+        'NAME': "CSCI5308_13_DEVINT",
+        'USER': "CSCI5308_13_DEVINT_USER",
+        'PASSWORD': "ir8coo6AiKeereiw",
         'HOST': "db-5308.cs.dal.ca",
         'PORT': '3306',
     }
@@ -145,10 +156,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-# ]
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

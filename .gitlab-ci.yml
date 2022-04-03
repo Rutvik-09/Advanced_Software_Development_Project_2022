@@ -86,15 +86,15 @@ code_quality:
     - flake8
 
 Deployment:
-  image: ruby:2.6
+  image: node:12:.16.1
   stage: deploy
   before_script:
-    - gem install dpl
-    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+    - echo "Deploying To Heroku"
   script:
-    - dpl --provider=heroku --app=$HEROKU_APPNAME_VINAY --api-key=$HEROKU_APIKEY_VINAY
-    - export HEROKU_API_KEY=$HEROKU_APIKEY_VINAY
-    - heroku run --app $HEROKU_APPNAME_VINAY python manage.py migrate
+    - git push https://${HEROKU_APPNAME_VINAY}:${HEROKU_APIKEY_VINAY}@https://git.heroku.com/test-farmnfood.git HEAD:main
+#    - export HEROKU_API_KEY=$HEROKU_APIKEY_VINAY
+#    - heroku run --app $HEROKU_APPNAME_VINAY python manage.py makemigrations farmfoodapp
+#    - heroku run --app $HEROKU_APPNAME_VINAY python manage.py migrate
   environment:
     name: production
-    url: $HEROKU_APP_HOST_VINAY
+    url: https://test-farmnfood.herokuapp.com/

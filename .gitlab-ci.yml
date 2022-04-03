@@ -30,9 +30,9 @@
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
 stages:
-#  - build
-#  - test
-#  - code_quality
+  #- build
+  #- test
+  #- code_quality
   - deploy
 
 variables:

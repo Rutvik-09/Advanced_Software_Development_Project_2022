@@ -58,7 +58,8 @@ def decode_token(token):
 
 def send_forget_pass_email(payload, email):
     token = create_token(payload)
-    url = "http://localhost:8000/reset/" + token
+    # url = "http://localhost:8000/reset/" + token
+    url = "https://test-farmnfood.herokuapp.com//reset/" + token
     subject = "Farm n Food - Reset Password"
     body = f"""
         You or Someone has Requested to Reset Your Password
@@ -71,7 +72,8 @@ def send_forget_pass_email(payload, email):
 
 def send_verification_email(payload, email):
     token = create_token(payload)
-    url = "http://localhost:8000/verify/" + token
+    # url = "http://localhost:8000/verify/" + token
+    url = "https://test-farmnfood.herokuapp.com//verify/" + token
     subject = "Farm n Food - Verify Email"
     body = f"""
     Please Verify Your Email

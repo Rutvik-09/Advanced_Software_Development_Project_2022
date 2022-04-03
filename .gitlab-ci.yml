@@ -91,10 +91,12 @@ Deployment:
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+
   script:
-    - dpl --provider=heroku --app=$HEROKU_APPNAME_VINAY --api-key=$HEROKU_APIKEY_VINAY
-    - export HEROKU_API_KEY=$HEROKU_APIKEY_VINAY
-    - heroku run --app $HEROKU_APPNAME_VINAY python manage.py migrate
+    - dpl --provider=heroku --app=$HEROKU_APPNAME_Jenish --api-key=$HEROKU_APIKEY_Jenish
+    - export HEROKU_API_KEY=$HEROKU_APIKEY_Jenish
+    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py migrate
   environment:
     name: production
-    url: $HEROKU_APP_HOST_VINAY
+    url: $HEROKU_APP_HOST_Jenish
+

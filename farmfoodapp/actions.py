@@ -73,7 +73,7 @@ def send_forget_pass_email(payload, email):
 def send_verification_email(payload, email):
     token = create_token(payload)
     # url = "http://localhost:8000/verify/" + token
-    url = "https://test-farmnfood.herokuapp.com//verify/" + token
+    url = "farm-food13.herokuapp.com//verify/" + token
     subject = "Farm n Food - Verify Email"
     body = f"""
     Please Verify Your Email

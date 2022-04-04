@@ -30,71 +30,83 @@
 # https://gitlab.com/gitlab-org/gitlab/-/issues/30178
 
 stages:
-  - build
-  - test
-  - code_quality
+#  - build
+#  - test
+#  - code_quality
   - deploy
 
-variables:
-  # DJANGO_CONFIG: "test"
-  MYSQL_DATABASE: $MYSQL_DATABASE
-  #  MYSQL_ROOT_PASSWORD: $MYSQL_PASS
-  MYSQL_USER: $MYSQL_USER
-  MYSQL_PASSWORD: $MYSQL_PASSWORD
-  MYSQL_HOST: $MYSQL_HOST
+#variables:
+#  # DJANGO_CONFIG: "test"
+#  MYSQL_DATABASE: $MYSQL_DATABASE
+#  #  MYSQL_ROOT_PASSWORD: $MYSQL_PASS
+#  MYSQL_USER: $MYSQL_USER
+#  MYSQL_PASSWORD: $MYSQL_PASSWORD
+#  MYSQL_HOST: $MYSQL_HOST
 
-default:
-  image: ubuntu:20.04
-  #
-  # Pick zero or more services to be used on all builds.
-  # Only needed when using a docker container to run your tests in.
-  # Check out: http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
-  services:
-    - mysql:8.0
-  #
-  # This folder is cached between builds
-  # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
-  cache:
-    paths:
-      - ~/.cache/pip/
-  before_script:
-    - apt -y update
-    - apt -y install apt-utils
-    - apt -y install net-tools python3.8 python3-pip mysql-client libmysqlclient-dev
-    - apt -y upgrade
-    - python3 -m pip install --upgrade pip
-    - pip3 install -r build_req.txt
-
-
-migrations:
-  stage: build
-  script:
-    - python3 manage.py makemigrations
-    - python3 manage.py makemigrations farmfoodapp
-    - python3 manage.py migrate
-    - python3 manage.py check
+#default:
+#  image: ubuntu:20.04
+#  #
+#  # Pick zero or more services to be used on all builds.
+#  # Only needed when using a docker container to run your tests in.
+#  # Check out: http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
+#  services:
+#    - mysql:8.0
+#  #
+#  # This folder is cached between builds
+#  # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
+#  cache:
+#    paths:
+#      - ~/.cache/pip/
+#  before_script:
+#    - apt -y update
+#    - apt -y install apt-utils
+#    - apt -y install net-tools python3.8 python3-pip mysql-client libmysqlclient-dev
+#    - apt -y upgrade
+#    - python3 -m pip install --upgrade pip
+#    - pip3 install -r build_req.txt
 
 
-test_case:
-  stage: test
-  script:
-    - python3 manage.py test farmfoodapp
+#migrations:
+#  stage: build
+#  script:
+#    - python3 manage.py makemigrations
+#    - python3 manage.py makemigrations farmfoodapp
+#    - python3 manage.py migrate
+#    - python3 manage.py check
+#
+#
+#test_case:
+#  stage: test
+#  script:
+#    - python3 manage.py test farmfoodapp
+#
+#code_quality:
+#  stage: code_quality
+#  script:
+#    - flake8
 
-code_quality:
-  stage: code_quality
-  script:
-    - flake8
-
-Deployment:
-  image: ruby:2.6
+#Deployment:
+#  image: ruby:2.6
+#  stage: deploy
+#  before_script:
+#    - gem install dpl
+#    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+#  script:
+#    - dpl --provider=heroku --app=$HEROKU_APPNAME_VINAY --api-key=$HEROKU_APIKEY_VINAY
+#    - export HEROKU_API_KEY=$HEROKU_APIKEY_VINAY
+#    - heroku run --app $HEROKU_APPNAME_VINAY python manage.py migrate
+#  environment:
+#    name: production
+#    url: $HEROKU_APP_HOST_VINAY
+Deploy:
+  image: ruby:latest
   stage: deploy
   before_script:
     - gem install dpl
-    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
   script:
-    - dpl --provider=heroku --app=$HEROKU_APPNAME_VINAY --api-key=$HEROKU_APIKEY_VINAY
-    - export HEROKU_API_KEY=$HEROKU_APIKEY_VINAY
-    - heroku run --app $HEROKU_APPNAME_VINAY python manage.py migrate
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY
   environment:
-    name: production
-    url: $HEROKU_APP_HOST_VINAY
+    name: main
+    url: $HEROKU_APP_HOST
+  only:
+    - master

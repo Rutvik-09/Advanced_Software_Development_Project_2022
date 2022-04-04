@@ -15,7 +15,7 @@ from pathlib import Path
 import os
 import dj_database_url
 
-PRODUCTION = os.environ.get('DATABASE_URL') != None
+# PRODUCTION = os.environ.get('DATABASE_URL') != None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-re=rnbs!oy3_7mpbbp4+y&48yvlmfpn)5ouc@h4h3naswk6755
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'farmfood13.herokuapp.com']
 
 # Application definition
 
@@ -100,8 +100,8 @@ DATABASES = {
     }
 }
 
-if PRODUCTION:
-    DATABASES['default'] = dj_database_url.config()
+# if PRODUCTION:
+#     DATABASES['default'] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

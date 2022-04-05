@@ -221,7 +221,7 @@ def onboard_vendor_view_api(request):
 def view_products(request):
     if "login_session_data" in request.session:
         login_data = request.session["login_session_data"]
-        dict_vname = {"first_name": request.session["login_session_data"]["first_name"]}
+       # dict_vname = {"first_name": request.session["login_session_data"]["first_name"]}
         reg_data = VendorProduct.objects.filter(user_id=login_data["id"])
         json_data = [{
             "product_name": i.product_name,

@@ -26,6 +26,7 @@ urlpatterns = [
     path('category/<str:cat>', views.show_category),
     path('logout/', views.logout_session),
     path('search-api/', views.search_api, name="search-api"),
-    path('search/<str:search_term>', views.search_view, name="search-view")
+    path('search/<str:search_term>', views.search_view, name="search-view"),
+    path('analytics/', views.product_charts)
 
 ]

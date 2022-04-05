@@ -464,3 +464,16 @@ def product_charts(request):
         return render(request, "Charts.html",
                       {"data_global": data_list_global, "data_user": data_list_user, "users": users,
                        "farmers": farmers, "product_trends": newlist})
+
+
+
+def add_product_view(prod_id):
+    product_count = ProductViews.objects.filter(product=VendorProduct.objects.get(id=prod_id)).count()
+    if product_count == 0:
+        prod_instance = ProductViews(product=VendorProduct.objects.get(id=prod_id), views=1)
+        prod_instance.save()
+    else:
+        prod_instance = ProductViews.objects.get(product=VendorProduct.objects.get(id=prod_id))
+        prod_instance.views = prod_instance.views + 1
+        prod_instance.save()
+    return True

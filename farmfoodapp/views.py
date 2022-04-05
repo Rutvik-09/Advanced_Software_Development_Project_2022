@@ -285,7 +285,7 @@ def view_product(request, prod_id):
             "first_name": request.session["login_session_data"]["first_name"],
             "is_farmer": isFarmer.is_farmer
         }
-        add_product_view(prod_id)
+        add_product_view_count(prod_id)
         return render(request, 'products/View_Product.html', data_dict)
     else:
         HttpResponse("NOT ALLOWED")
@@ -467,7 +467,7 @@ def product_charts(request):
 
 
 
-def add_product_view(prod_id):
+def add_product_view_count(prod_id):
     product_count = ProductViews.objects.filter(product=VendorProduct.objects.get(id=prod_id)).count()
     if product_count == 0:
         prod_instance = ProductViews(product=VendorProduct.objects.get(id=prod_id), views=1)

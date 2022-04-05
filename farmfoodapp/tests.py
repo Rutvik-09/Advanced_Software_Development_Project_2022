@@ -65,3 +65,10 @@ class ExpenseModelTest(SimpleTestCase):
         response = client.get('/cost-manager/')
         self.assertEqual(response.url, '/login/')
 
+class ChartModelTest(SimpleTestCase):
+
+    def test_charts(self):
+        client = Client()
+        response = client.get('/analytics/')
+        self.assertEqual(response.url, '/login/')
+

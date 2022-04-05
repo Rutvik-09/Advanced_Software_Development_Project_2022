@@ -42,3 +42,26 @@ class BlogModelTest(SimpleTestCase):
         client = Client()
         response = client.get('/edit-blog/1')
         self.assertEqual(response.url, '/login/')
+
+class ExpenseModelTest(SimpleTestCase):
+
+    def test_delete_expense(self):
+        client = Client()
+        response = client.get('/delete-cost/1')
+        self.assertEqual(response.url, '/login/')
+
+    def test_edit_expenses(self):
+        client = Client()
+        response = client.get('/edit-cost/1')
+        self.assertEqual(response.url, '/login/')
+
+    def test_view_expenses(self):
+        client = Client()
+        response = client.get('/view-expenses/')
+        self.assertEqual(response.url, '/login/')
+
+    def test_cost_manager_view(self):
+        client = Client()
+        response = client.get('/cost-manager/')
+        self.assertEqual(response.url, '/login/')
+

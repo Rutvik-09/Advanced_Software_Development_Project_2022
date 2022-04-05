@@ -36,7 +36,7 @@ def register_api(request):
         else:
             return HttpResponse("Something Went Wrong")
     except Exception as e:
-        return render(request, 'User_Registration.html',
+        return render(request, 'onboarding/User_Registration.html',
                       {"msg": "Something Went Wrong, Try Again in Some Time, " + str(e)})
 
 
@@ -176,10 +176,11 @@ def add_product_view(request):
     if request.method == 'GET':
         if "login_session_data" in request.session:
             return render(request, 'products/Add_Product.html')
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
     if request.method == "POST":
         if "login_session_data" in request.session:
             user_data = request.data
-            print(user_data)
             login_data = request.session["login_session_data"]
             vp_obj = VendorProduct(user_id=RegisterModel.objects.get(id=login_data["id"]),
                                    product_name=user_data["product_name"],
@@ -227,6 +228,8 @@ def view_products(request):
         }
             for i in reg_data]
         return render(request, 'products/View_Product_Page.html', {"data": json_data})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["GET", "POST"])
@@ -252,6 +255,8 @@ def edit_product(request, prod_id):
                 obj.image = data['image']
                 obj.save()
             return HttpResponseRedirect(reverse('view_products'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def delete_product(request, prod_id):
@@ -259,6 +264,8 @@ def delete_product(request, prod_id):
         data = VendorProduct.objects.get(id=prod_id)
         data.delete()
         return HttpResponseRedirect(reverse('view_products'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def view_product(request, prod_id):
@@ -282,7 +289,7 @@ def view_product(request, prod_id):
         add_product_view_count(prod_id)
         return render(request, 'products/View_Product.html', data_dict)
     else:
-        HttpResponse("NOT ALLOWED")
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def dashboard(request):
@@ -329,6 +336,8 @@ def view_inventory(request):
                 for x in data
             ]
             return render(request, 'inventory/View_Inventory_Page.html', {"data": data_list})
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
 
 
 def delete_inventory(request, in_id):
@@ -337,6 +346,8 @@ def delete_inventory(request, in_id):
             data = VendorInventory.objects.get(id=in_id)
             data.delete()
             return HttpResponseRedirect(reverse('view-inventory'))
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["GET", "POST"])
@@ -351,6 +362,8 @@ def edit_inventory(request, in_id):
                          "quantity": float("{:.2f}".format(data.quantity)),
                          "unit": data.unit}
             return render(request, 'inventory/Edit_Inventory.html', data_dict)
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
     if request.method == "POST":
         if "login_session_data" in request.session:
             data = request.data
@@ -383,14 +396,20 @@ def show_category(request, cat):
 
 
 def logout_session(request):
-    del request.session["login_session_data"]
-    return HttpResponseRedirect(reverse('login-view'))
+    if "login_session_data" in request.session:
+        del request.session["login_session_data"]
+        return HttpResponseRedirect(reverse('login-view'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["POST"])
 def search_api(request):
-    data = request.data
-    return HttpResponseRedirect("/search/" + data["search_query"])
+    if "login_session_data" in request.session:
+        data = request.data
+        return HttpResponseRedirect("/search/" + data["search_query"])
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def search_view(request, search_term):
@@ -429,6 +448,8 @@ def search_view(request, search_term):
                         data_list.append(data_dict)
         return render(request, "home/Search.html",
                       {"products": data_list, "first_name": isFarmer.first_name, "is_farmer": isFarmer.is_farmer})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def product_charts(request):
@@ -468,6 +489,8 @@ def product_charts(request):
         return render(request, "analytics/Charts.html",
                       {"data_global": data_list_global, "data_user": data_list_user, "users": users,
                        "farmers": farmers, "product_trends": newlist, "cost_list": data_cost_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def add_product_view_count(prod_id):
@@ -487,6 +510,8 @@ def publish_blog(request):
     if request.method == "GET":
         if "login_session_data" in request.session:
             return render(request, 'blog/Publish_Article.html')
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
     if request.method == "POST":
         if "login_session_data" in request.session:
             data = request.data
@@ -505,6 +530,8 @@ def view_blogs(request):
                       "last_updated": i.date_updated.strftime("%d-%B-%Y | %H-%M %p")} for i
                      in data]
         return render(request, "blog/View_Blogs.html", {"data": blog_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["GET", "POST"])
@@ -521,13 +548,17 @@ def edit_blog(request, blog_id):
             data_obj.content = data["content"]
             data_obj.save()
             return HttpResponseRedirect(reverse('view-blogs'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def delete_blog(request, blog_id):
     if "login_session_data" in request.session:
         data = VendorBlogs.objects.get(id=blog_id)
         data.delete()
-    return HttpResponseRedirect(reverse('view-blogs'))
+        return HttpResponseRedirect(reverse('view-blogs'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["GET", "POST"])
@@ -544,6 +575,8 @@ def cost_manager_view(request):
                 expense=data["expense"])
             cost_obj.save()
             return HttpResponseRedirect(reverse('view-expenses'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def view_expenses(request):
@@ -554,6 +587,8 @@ def view_expenses(request):
             {"id": i.id, "coster": i.coster, "category": i.category, "expense": float("{:.2f}".format(i.expense)),
              "date_created": i.date_created.strftime("%d-%B-%Y | %H-%M %p")} for i in data_obj]
         return render(request, 'cost/View_Expenses.html', {"data": exp_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["GET", "POST"])
@@ -572,6 +607,8 @@ def edit_expenses(request, exp_id):
             cost_obj.expense = data["expense"]
             cost_obj.save()
             return HttpResponseRedirect(reverse('view-expenses'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def delete_expense(request, exp_id):
@@ -580,6 +617,8 @@ def delete_expense(request, exp_id):
             data_obj = CostManager.objects.get(id=exp_id)
             data_obj.delete()
             return HttpResponseRedirect(reverse('view-expenses'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def view_blog_list(request):
@@ -594,6 +633,8 @@ def view_blog_list(request):
                 "date_published": i.date_created.strftime("%d-%B-%Y")
             })
         return render(request, 'blog/List_Blogs.html', {"data": data_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def show_blog(request, blog_id):
@@ -607,3 +648,5 @@ def show_blog(request, blog_id):
             "content": blog.content
         }
         return render(request, 'blog/Show_Blog.html', data)
+    else:
+        return HttpResponseRedirect(reverse('login-view'))

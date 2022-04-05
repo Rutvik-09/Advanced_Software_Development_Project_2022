@@ -26,6 +26,7 @@ class RegisterModelTest(SimpleTestCase):
         response = client.get('/login-api/')
         self.assertEqual(response.status_code, 200)
 
+
 class BlogModelTest(SimpleTestCase):
 
     def test_blogs(self):
@@ -42,6 +43,7 @@ class BlogModelTest(SimpleTestCase):
         client = Client()
         response = client.get('/edit-blog/1')
         self.assertEqual(response.url, '/login/')
+
 
 class ExpenseModelTest(SimpleTestCase):
 
@@ -64,6 +66,7 @@ class ExpenseModelTest(SimpleTestCase):
         client = Client()
         response = client.get('/cost-manager/')
         self.assertEqual(response.url, '/login/')
+
 
 class ChartModelTest(SimpleTestCase):
 
@@ -88,6 +91,7 @@ class InventoryTest(SimpleTestCase):
         response = client.get('/view-inventory/')
         self.assertEqual(response.url, '/login/')
 
+
 class ProductTest(SimpleTestCase):
 
     def test_products(self):
@@ -99,6 +103,7 @@ class ProductTest(SimpleTestCase):
         client = Client()
         response = client.get('/add-product/')
         self.assertEqual(response.url, '/login/')
+
 
 class ActionsTest(SimpleTestCase):
 

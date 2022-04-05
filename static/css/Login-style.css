@@ -186,8 +186,7 @@ h2 {
   font-size: 36px; }
 
 .main {
-  background: #f8f8f8;
-  background-image: -webkit-linear-gradient( 136deg, rgb(149,153,226) 0%, rgb(139,198,236) 100%);
+  background-color: linear-gradient(to top, #8da3c3, #69b2cb, #54bfbc, #74c698, #adc671);
   padding: 150px 0; }
 
 .clear {
@@ -197,8 +196,6 @@ body {
   font-size: 13px;
   line-height: 1.8;
   color: #222;
-  background: #f8f8f8;
-  background-image: -webkit-linear-gradient( 136deg, rgb(149,153,226) 0%, rgb(139,198,236) 100%);
   font-weight: 400;
   font-family: Poppins; }
 
@@ -288,7 +285,7 @@ figure {
   -ms-border-radius: 5px;
   margin-top: 25px;
   cursor: pointer; }
-  
+
   .form-submit:hover {
     background: #4292dc; }
 
@@ -595,12 +592,12 @@ label.valid {
     margin-bottom: 10px; } }
 
 
-    
+
 
     .form-control.success input {
       border-color: #2ecc71;
     }
-    
+
     .form-control.error input {
       border-color: #e74c3c;
     }
@@ -613,9 +610,12 @@ label.valid {
     left: 0;
     visibility: hidden;
   }
-  
+
   .form-control.error small {
     visibility: visible;
   }
 
 /*# sourceMappingURL=style.css.map */
+.back_color{
+    background: linear-gradient(to top, #8da3c3, #69b2cb, #54bfbc, #74c698, #adc671);
+}

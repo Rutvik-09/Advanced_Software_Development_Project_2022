@@ -85,20 +85,20 @@ default:
 #  script:
 #    - flake8
 
-Deployment:
-  image: ruby:2.6
-  stage: deploy
-  before_script:
-    - gem install dpl
-    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-
-  script:
-    - dpl --provider=heroku --app=$HEROKU_APPNAME_Jenish --api-key=$HEROKU_APIKEY_Jenish
-    - export HEROKU_API_KEY=$HEROKU_APIKEY_Jenish
-    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py makemigrations farmfoodapp
-    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py migrate
-  environment:
-    name: production
-    url: $HEROKU_APP_HOST_Jenish
+#Deployment:
+#  image: ruby:2.6
+#  stage: deploy
+#  before_script:
+#    - gem install dpl
+#    - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+#
+#  script:
+#    - dpl --provider=heroku --app=$HEROKU_APPNAME_Jenish --api-key=$HEROKU_APIKEY_Jenish
+#    - export HEROKU_API_KEY=$HEROKU_APIKEY_Jenish
+#    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py makemigrations farmfoodapp
+#    - heroku run --app $HEROKU_APPNAME_Jenish python manage.py migrate
+#  environment:
+#    name: production
+#    url: $HEROKU_APP_HOST_Jenish
 
 

@@ -178,7 +178,8 @@ def verify_reg_email(request, token):
 def add_product_view(request):
     if request.method == 'GET':
         if "login_session_data" in request.session:
-            return render(request, 'products/Add_Product.html')
+            dict_pronname={"first_name": request.session["login_session_data"]["first_name"]}
+            return render(request, 'products/Add_Product.html',dict_pronname)
     if request.method == "POST":
         if "login_session_data" in request.session:
             user_data = request.data
@@ -220,6 +221,7 @@ def onboard_vendor_view_api(request):
 def view_products(request):
     if "login_session_data" in request.session:
         login_data = request.session["login_session_data"]
+        dict_vname = {"first_name": request.session["login_session_data"]["first_name"]}
         reg_data = VendorProduct.objects.filter(user_id=login_data["id"])
         json_data = [{
             "product_name": i.product_name,
@@ -290,7 +292,8 @@ def view_product(request, prod_id):
 
 def dashboard(request):
     if "login_session_data" in request.session:
-        return render(request, 'home/Farmer_Dashboard.html')
+        dict_name={ "first_name": request.session["login_session_data"]["first_name"] }
+        return render(request, 'home/Farmer_Dashboard.html',dict_name)
     else:
         return HttpResponseRedirect(reverse('login-view'))
 

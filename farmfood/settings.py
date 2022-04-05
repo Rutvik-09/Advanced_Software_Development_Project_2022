@@ -79,16 +79,16 @@ WSGI_APPLICATION = 'farmfood.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.environ.get('MYSQL_DATABASE'),
-#         'USER': os.environ.get('MYSQL_USER'),
-#         'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
-#         'HOST': os.environ.get('MYSQL_HOST'),
-#         'PORT': '3306',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('MYSQL_DATABASE'),
+        'USER': os.environ.get('MYSQL_USER'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
+        'HOST': os.environ.get('MYSQL_HOST'),
+        'PORT': '3306',
+    }
+}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
@@ -100,23 +100,23 @@ WSGI_APPLICATION = 'farmfood.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-
-    "default": {
-
-        "ENGINE": "django.db.backends.mysql",
-
-        "NAME": os.environ["NAME"],
-
-        "HOST": os.environ["HOST"],
-
-        "USER": os.environ["USER"],
-
-        "PASSWORD": os.environ["PASSWORD"],
-
-    }
-
-}
+# DATABASES = {
+#
+#     "default": {
+#
+#         "ENGINE": "django.db.backends.mysql",
+#
+#         "NAME": os.environ["NAME"],
+#
+#         "HOST": os.environ["HOST"],
+#
+#         "USER": os.environ["USER"],
+#
+#         "PASSWORD": os.environ["PASSWORD"],
+#
+#     }
+#
+# }
 
 if PRODUCTION:
     DATABASES['default'] = dj_database_url.config()
@@ -163,10 +163,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-# ]
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

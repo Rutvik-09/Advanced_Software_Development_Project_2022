@@ -19,13 +19,15 @@
             <div class="row p-2 pt-3 pb-3 d-flex align-items-center">
                 <div class="col-md-2"><img src="{% static 'Images/Logo_1.png' %}" width="150"></div>
                 <div class="col-md-8">
+                      <form method="POST" action="/search-api/">
                     <div class="d-flex form-inputs">
-                        <form method="POST" action="/search-api/">
+
                             <input class="form-control" type="text" name="search_query"
                                    placeholder="Search any product..." required>
                             <i class="bx bx-search"></i>
-                        </form>
+
                     </div>
+                           </form>
                 </div>
                 <div class="col-md-2">
                     <ul class="navbar-nav d-flex align-items-center">
@@ -108,9 +110,8 @@
     </label>
 
     <ul class="menu__box">
-        <li><a class="menu__item" href="Farmer_Dashboard.html">Home</a></li>
+        <li><a class="menu__item" href="/dashboard">Home</a></li>
         <li><a class="menu__item" href="#">About</a></li>
-        <li><a class="menu__item" href="#">Edit Profile</a></li>
     </ul>
 </div>
 

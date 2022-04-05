@@ -1,23 +1,16 @@
 import datetime
-import json
-
 import pytz
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-# from rest_framework import status
-# from rest_framework.response import Response
-
-from farmfoodapp.models import RegisterModel, VendorManager, VendorProduct, VendorInventory, ProductViews, VendorBlogs, \
-    CostManager
+from farmfoodapp.models import RegisterModel, VendorManager, VendorProduct, CostManager
+from farmfoodapp.models import VendorInventory, ProductViews, VendorBlogs
 from farmfoodapp.app_serializers import RegisterSerializer, VendorProductSer
 from farmfoodapp.actions import check_existing_user, check_login_attempts, reduce_login_attempts, decode_token, \
     send_verification_email, send_forget_pass_email, make_data_dict
 from rest_framework.decorators import api_view
 from fuzzywuzzy import fuzz
-
-# from fuzzywuzzy import process
 
 utc = pytz.UTC
 

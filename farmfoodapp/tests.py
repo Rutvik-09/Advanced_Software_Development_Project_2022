@@ -72,3 +72,19 @@ class ChartModelTest(SimpleTestCase):
         response = client.get('/analytics/')
         self.assertEqual(response.url, '/login/')
 
+
+class SearchAPITest(SimpleTestCase):
+
+    def test_search(self):
+        client = Client()
+        response = client.post('/search-api/')
+        self.assertEqual(response.url, '/login/')
+
+
+class InventoryTest(SimpleTestCase):
+
+    def test_view_inventory(self):
+        client = Client()
+        response = client.get('/view-inventory/')
+        self.assertEqual(response.url, '/login/')
+

@@ -25,3 +25,20 @@ class RegisterModelTest(SimpleTestCase):
         client = Client()
         response = client.get('/login-api/')
         self.assertEqual(response.status_code, 200)
+
+class BlogModelTest(SimpleTestCase):
+
+    def test_blogs(self):
+        client = Client()
+        response = client.get('/blogs/')
+        self.assertEqual(response.url, '/login/')
+
+    def test_blog_with_id(self):
+        client = Client()
+        response = client.get('/blog/1')
+        self.assertEqual(response.url, '/login/')
+
+    def test_edit_blog(self):
+        client = Client()
+        response = client.get('/edit-blog/1')
+        self.assertEqual(response.url, '/login/')

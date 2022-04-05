@@ -88,3 +88,14 @@ class InventoryTest(SimpleTestCase):
         response = client.get('/view-inventory/')
         self.assertEqual(response.url, '/login/')
 
+class ProductTest(SimpleTestCase):
+
+    def test_products(self):
+        client = Client()
+        response = client.get('/view-products/')
+        self.assertEqual(response.url, '/login/')
+
+    def test_add_product_view(self):
+        client = Client()
+        response = client.get('/add-product/')
+        self.assertEqual(response.url, '/login/')

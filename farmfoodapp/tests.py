@@ -99,3 +99,19 @@ class ProductTest(SimpleTestCase):
         client = Client()
         response = client.get('/add-product/')
         self.assertEqual(response.url, '/login/')
+
+class ActionsTest(SimpleTestCase):
+
+    def test_create_token(self):
+        data_dict = {"msg": "test_case"}
+        data = create_token(data_dict)
+        resp, resp_data = decode_token(data)
+        self.assertEqual(data_dict, resp_data)
+
+    def test_forget_email(self):
+        resp = send_forget_pass_email({"msg": "testing"}, "dalgroup13@gmail.com")
+        self.assertEqual(resp, True)
+
+    def test_verification_email(self):
+        resp = send_verification_email({"msg": "testing"}, "dalgroup13@gmail.com")
+        self.assertEqual(resp, True)

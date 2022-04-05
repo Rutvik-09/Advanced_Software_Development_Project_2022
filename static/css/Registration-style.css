@@ -1,11 +1,23 @@
-body {
-	margin:  0;
+html {
+	overflow-x: hidden; 
+}
+
+html, body {
+	margin: 0;
+  	padding: 0;
+	background: linear-gradient(to top, #8da3c3, #69b2cb, #54bfbc, #74c698, #adc671);
+	width: 100%;
+	height: 100%;
+  	background-repeat: no-repeat;
+  
+  	overflow-x: hidden; 
+ 
 }
 .form-v10{
-	background-color:  #75e2e9;
-	background-image: url("/Project/images/Food_2.jpg");
-	background-size: 1700px;
-	margin:  0 auto;
+	/* background-size: 700px; */
+	
+	/* margin: auto; */
+	
 	display: flex;
 	display: -webkit-flex;
 	justify-content: center;
@@ -13,14 +25,15 @@ body {
 	-ms-justify-content: center;
 	-moz-justify-content: center;
 	-webkit-justify-content: center;
-	align-items: center;
+	
+	/* align-items: center;
 	-o-align-items: center;
 	-ms-align-items: center;
 	-moz-align-items: center;
-	-webkit-align-items: center;
-	background-image: -moz-linear-gradient( 136deg, rgb(149,153,226) 0%, rgb(139,198,236) 100%);
+	-webkit-align-items: center; */
+	/* background-image: -moz-linear-gradient( 136deg, rgb(149,153,226) 0%, rgb(139,198,236) 100%); */
     /*background-image: -webkit-linear-gradient( 136deg, rgb(149,153,226) 0%, rgb(139,198,236) 100%); */
-    background-image: -ms-linear-gradient( 136deg, rgb(149,153,226) 0%, rgb(139,198,236) 100%);
+    /* background-image: -ms-linear-gradient( 136deg, rgb(149,153,226) 0%, rgb(139,198,236) 100%); */
 }
 /* .page-content {
 	width: 100%;
@@ -45,7 +58,7 @@ body {
 	background-size: auto;	
 } */
 .form-v10-content  {
-	background: #98FB98;
+	background: white;
 	width: 1100px;
 	border-radius: 10px;
 	-o-border-radius: 10px;
@@ -60,7 +73,7 @@ body {
 	margin: 95px 0;
 	position: relative;
 	/* font-family: 'Montserrat', sans-serif; */
-	font-family: Poppins;
+	font-family: 'Times New Roman', Times, serif;
 }
 .form-v10-content .form-detail {
 	position: relative;
@@ -85,7 +98,7 @@ body {
 .form-v10-content .form-detail .form-right {
 	
 	width: 100%;
-	background: 	#F4C430;
+	background: 	#E0E0E0;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 }
@@ -263,7 +276,7 @@ body {
     margin: 44px 0 10px;
 }
 .form-v10-content .form-detail .form-right .form-submit {
-	background-color: lawngreen;
+	background-color: #7FA5F9;
 	border-radius: 12px;
 	-o-border-radius: 25px;
 	-ms-border-radius: 25px;
@@ -276,14 +289,14 @@ body {
 	-webkit-box-shadow: 0px 6px 17px 0px rgba(0, 0, 0, 0.15);
 	height: 40px;
 	width: 180px;
-	border: 2.5px solid black;
+	border: 2.5px solid #7FA5F9;
 	margin: 6px 0 30px 0px;
 	cursor: pointer;
 	font-weight: 700;
 	font-size: 15px;
 }
 .form-v10-content .form-detail .form-right .form-submit:hover {
-	background: violet;
+	background: #3433FF;
 }
 .form-v10-content .form-detail .form-right .form-row-last input {
 	padding: 12.5px;
@@ -407,7 +420,9 @@ body {
 
 
 	#signin {
-		margin-top: 16px; }
+		margin-top: 16px; 
+		color: white;
+	}
 
 	/* .form-row-last .form-submit {
 		display: inline-block;

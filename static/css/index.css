@@ -1,3 +1,8 @@
+html,body{
+  height:100%;
+}
+
+
 .navbar-nav{
   margin-left: auto ;
 }

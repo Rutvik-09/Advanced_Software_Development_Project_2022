@@ -80,34 +80,34 @@ WSGI_APPLICATION = 'farmfood.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 #
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "CSCI5308_13_PRODUCTION",
-        'USER': "CSCI5308_13_PRODUCTION_USER",
-        'PASSWORD': "xoopheutah8Sai1o",
-        'HOST': "db-5308.cs.dal.ca",
-        'PORT': '3306',
-    }
-}
-
 # DATABASES = {
-#
-#     "default": {
-#
-#         "ENGINE": "django.db.backends.mysql",
-#
-#         "NAME": os.environ["NAME"],
-#
-#         "HOST": os.environ["HOST"],
-#
-#         "USER": os.environ["USER"],
-#
-#         "PASSWORD": os.environ["PASSWORD"],
-#
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': "CSCI5308_13_PRODUCTION",
+#         'USER': "CSCI5308_13_PRODUCTION_USER",
+#         'PASSWORD': "xoopheutah8Sai1o",
+#         'HOST': "db-5308.cs.dal.ca",
+#         'PORT': '3306',
 #     }
-#
 # }
+
+DATABASES = {
+
+    "default": {
+
+        "ENGINE": "django.db.backends.mysql",
+
+        "NAME": os.environ["NAME"],
+
+        "HOST": os.environ["HOST"],
+
+        "USER": os.environ["USER"],
+
+        "PASSWORD": os.environ["PASSWORD"],
+
+    }
+
+}
 
 # if PRODUCTION:
 #     DATABASES['default'] = dj_database_url.config()
@@ -154,10 +154,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

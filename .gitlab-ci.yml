@@ -33,7 +33,7 @@ stages:
 #  - build
 #  - test
 #  - code_quality
-  - deploy
+#  - deploy
 
 variables:
   # DJANGO_CONFIG: "test"

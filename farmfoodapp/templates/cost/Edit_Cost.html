@@ -24,8 +24,11 @@
                 <div class="row p-2 pt-3 pb-3 d-flex align-items-center">
                     <div class="col-md-2"> <img src="{% static 'Images/Logo_1.png' %}" width="150"> </div>
                     <div class="col-md-8">
-                        <div class="d-flex form-inputs"> <input class="form-control" type="text"
-                                placeholder="Search any product..."> <i class="bx bx-search"></i> </div>
+                        <div class="d-flex form-inputs"> <form method="POST" action="/search-api/">
+                            <input class="form-control" type="text" name="search_query"
+                                   placeholder="Search any product..." required>
+                            <i class="bx bx-search"></i>
+                        </form> <i class="bx bx-search"></i> </div>
                     </div>
                     <div class="col-md-2">
                         <ul class="navbar-nav d-flex align-items-center">
@@ -38,17 +41,17 @@
                                                 class="rounded-circle" width="70"></div>
                                     </li>
                                     <li class="nav-item"> <a href="#" class="nav-link d-flex align-items-center"
-                                            data-abc="true" id="menu1" data-toggle="dropdown"><span>Johnbhai</span><i
+                                            data-abc="true" id="menu1" data-toggle="dropdown"><span>{{first_name}}</span><i
                                                 class='bx bxs-chevron-down'></i></a> </li>
 
                                 </div>
-                                <div class="dropdown-content" style="background-color:salmon;">
-                                    <a href="Add_Inventory.html">Add Inventory</a>
-                                    <a href="View_Inventory_Page.html">View Inventory</a>
-                                    <a href="Add_Product.html">Add Product </a>
-                                    <a href="View_Product_Page.html">View Product </a>
-                                    <a href="User_Login.html">Logout</a>
-                                </div>
+                               <div class="dropdown-content" style="background-color:salmon;">
+                                <a href="/">Home</a>
+                                <a href="/dashboard">Dashboard</a>
+                                <a href="/view-inventory">View Inventory</a>
+                                <a href="/view-products">View Products</a>
+                                <a href="/logout">Logout</a>
+                            </div>
                             </div>
                         </ul>
                     </div>

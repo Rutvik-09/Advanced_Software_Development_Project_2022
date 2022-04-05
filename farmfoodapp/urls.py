@@ -37,5 +37,6 @@ urlpatterns = [
     path('edit-cost/<int:exp_id>', views.edit_expenses, name="edit-expenses"),
     path('delete-cost/<int:exp_id>', views.delete_expense, name="delete-expenses"),
     path('blogs/', views.view_blog_list, name="view_blog_list"),
-    path('blog/<int:blog_id>', views.show_blog, name="show-blog")
+    path('blog/<int:blog_id>', views.show_blog, name="show-blog"),
+    path('about/', views.about_team, name="about-team")
 ]

@@ -26,6 +26,16 @@ urlpatterns = [
     path('category/<str:cat>', views.show_category),
     path('logout/', views.logout_session),
     path('search-api/', views.search_api, name="search-api"),
-    path('search/<str:search_term>', views.search_view, name="search-view")
-
+    path('search/<str:search_term>', views.search_view, name="search-view"),
+    path('analytics/', views.product_charts),
+    path('publish-blog/', views.publish_blog, name="publish-blog"),
+    path('view-blogs/', views.view_blogs, name="view-blogs"),
+    path('edit-blog/<str:blog_id>', views.edit_blog, name="edit-blog"),
+    path('delete-blog/<str:blog_id>', views.delete_blog, name="delete-blog"),
+    path('cost-manager/', views.cost_manager_view, name="cost-manager"),
+    path('view-expenses/', views.view_expenses, name="view-expenses"),
+    path('edit-cost/<int:exp_id>', views.edit_expenses, name="edit-expenses"),
+    path('delete-cost/<int:exp_id>', views.delete_expense, name="delete-expenses"),
+    path('blogs/', views.view_blog_list, name="view_blog_list"),
+    path('blog/<int:blog_id>', views.show_blog, name="show-blog")
 ]

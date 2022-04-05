@@ -15,7 +15,7 @@ from pathlib import Path
 import os
 import dj_database_url
 
-PRODUCTION = os.environ.get('DATABASE_URL') != None
+# PRODUCTION = os.environ.get('DATABASE_URL') != None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-re=rnbs!oy3_7mpbbp4+y&48yvlmfpn)5ouc@h4h3naswk6755
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', 'farm-food13.herokuapp.com']
 
 # Application definition
 
@@ -79,29 +79,38 @@ WSGI_APPLICATION = 'farmfood.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.environ.get('MYSQL_DATABASE'),
-#         'USER': os.environ.get('MYSQL_USER'),
-#         'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
-#         'HOST': os.environ.get('MYSQL_HOST'),
+#         'NAME': "CSCI5308_13_PRODUCTION",
+#         'USER': "CSCI5308_13_PRODUCTION_USER",
+#         'PASSWORD': "xoopheutah8Sai1o",
+#         'HOST': "db-5308.cs.dal.ca",
 #         'PORT': '3306',
 #     }
 # }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "CSCI5308_13_PRODUCTION",
-        'USER': "CSCI5308_13_PRODUCTION_USER",
-        'PASSWORD': "xoopheutah8Sai1o",
-        'HOST': "db-5308.cs.dal.ca",
-        'PORT': '3306',
+
+    "default": {
+
+        "ENGINE": "django.db.backends.mysql",
+
+        "NAME": os.environ["NAME"],
+
+        "HOST": os.environ["HOST"],
+
+        "USER": os.environ["USER"],
+
+        "PASSWORD": os.environ["PASSWORD"],
+
     }
+
 }
 
-if PRODUCTION:
-    DATABASES['default'] = dj_database_url.config()
+# if PRODUCTION:
+#     DATABASES['default'] = dj_database_url.config()
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

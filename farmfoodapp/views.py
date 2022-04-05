@@ -4,16 +4,13 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-# from rest_framework import status
-# from rest_framework.response import Response
-
-from farmfoodapp.models import RegisterModel, VendorManager, VendorProduct, VendorInventory
+from farmfoodapp.models import RegisterModel, VendorManager, VendorProduct, CostManager
+from farmfoodapp.models import VendorInventory, ProductViews, VendorBlogs
 from farmfoodapp.app_serializers import RegisterSerializer, VendorProductSer
 from farmfoodapp.actions import check_existing_user, check_login_attempts, reduce_login_attempts, decode_token, \
     send_verification_email, send_forget_pass_email, make_data_dict
 from rest_framework.decorators import api_view
 from fuzzywuzzy import fuzz
-# from fuzzywuzzy import process
 
 utc = pytz.UTC
 
@@ -39,7 +36,7 @@ def register_api(request):
         else:
             return HttpResponse("Something Went Wrong")
     except Exception as e:
-        return render(request, 'User_Registration.html',
+        return render(request, 'onboarding/User_Registration.html',
                       {"msg": "Something Went Wrong, Try Again in Some Time, " + str(e)})
 
 
@@ -179,10 +176,11 @@ def add_product_view(request):
     if request.method == 'GET':
         if "login_session_data" in request.session:
             return render(request, 'products/Add_Product.html')
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
     if request.method == "POST":
         if "login_session_data" in request.session:
             user_data = request.data
-            print(user_data)
             login_data = request.session["login_session_data"]
             vp_obj = VendorProduct(user_id=RegisterModel.objects.get(id=login_data["id"]),
                                    product_name=user_data["product_name"],
@@ -230,6 +228,8 @@ def view_products(request):
         }
             for i in reg_data]
         return render(request, 'products/View_Product_Page.html', {"data": json_data})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["GET", "POST"])
@@ -255,6 +255,8 @@ def edit_product(request, prod_id):
                 obj.image = data['image']
                 obj.save()
             return HttpResponseRedirect(reverse('view_products'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def delete_product(request, prod_id):
@@ -262,6 +264,8 @@ def delete_product(request, prod_id):
         data = VendorProduct.objects.get(id=prod_id)
         data.delete()
         return HttpResponseRedirect(reverse('view_products'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def view_product(request, prod_id):
@@ -282,10 +286,10 @@ def view_product(request, prod_id):
             "first_name": request.session["login_session_data"]["first_name"],
             "is_farmer": isFarmer.is_farmer
         }
-        print(data_dict)
+        add_product_view_count(prod_id)
         return render(request, 'products/View_Product.html', data_dict)
     else:
-        HttpResponse("NOT ALLOWED")
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def dashboard(request):
@@ -332,6 +336,8 @@ def view_inventory(request):
                 for x in data
             ]
             return render(request, 'inventory/View_Inventory_Page.html', {"data": data_list})
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
 
 
 def delete_inventory(request, in_id):
@@ -340,6 +346,8 @@ def delete_inventory(request, in_id):
             data = VendorInventory.objects.get(id=in_id)
             data.delete()
             return HttpResponseRedirect(reverse('view-inventory'))
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["GET", "POST"])
@@ -354,6 +362,8 @@ def edit_inventory(request, in_id):
                          "quantity": float("{:.2f}".format(data.quantity)),
                          "unit": data.unit}
             return render(request, 'inventory/Edit_Inventory.html', data_dict)
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
     if request.method == "POST":
         if "login_session_data" in request.session:
             data = request.data
@@ -386,14 +396,20 @@ def show_category(request, cat):
 
 
 def logout_session(request):
-    del request.session["login_session_data"]
-    return HttpResponseRedirect(reverse('login-view'))
+    if "login_session_data" in request.session:
+        del request.session["login_session_data"]
+        return HttpResponseRedirect(reverse('login-view'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 @api_view(["POST"])
 def search_api(request):
-    data = request.data
-    return HttpResponseRedirect("/search/" + data["search_query"])
+    if "login_session_data" in request.session:
+        data = request.data
+        return HttpResponseRedirect("/search/" + data["search_query"])
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
 
 
 def search_view(request, search_term):
@@ -432,3 +448,205 @@ def search_view(request, search_term):
                         data_list.append(data_dict)
         return render(request, "home/Search.html",
                       {"products": data_list, "first_name": isFarmer.first_name, "is_farmer": isFarmer.is_farmer})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+def product_charts(request):
+    if "login_session_data" in request.session:
+        reg_obj = RegisterModel.objects.get(email=request.session["login_session_data"]["email"])
+        data_list_global = []
+        data_list_user = []
+        data_product_views = []
+        data_cost_list = []
+        category_list = ["vegetables", "fruits", "dairy", "livestock", "honey", "seasonalfoods"]
+        for category in category_list:
+            products_obj = VendorProduct.objects.filter(category=category)
+            data_list_global.append({"category": category.title(), "value": len(products_obj)})
+
+        for category in category_list:
+            products_obj = VendorProduct.objects.filter(category=category, user_id=reg_obj)
+            data_list_user.append({"category": category.title(), "value": len(products_obj)})
+
+        users = RegisterModel.objects.filter(is_farmer=False).count()
+        farmers = RegisterModel.objects.filter(is_farmer=True).count()
+
+        views_obj = ProductViews.objects.all()
+        for prod in views_obj:
+            product = VendorProduct.objects.get(id=prod.product.id)
+            data_product_views.append({"product_name": product.product_name, "views": prod.views})
+        newlist = sorted(data_product_views, key=lambda d: d['views'], reverse=True)
+        newlist = newlist[0:5]
+
+        cost_cats = ["raw materials", "Equipment", "vehicles", "labour"]
+        for costcat in cost_cats:
+            cost_data = CostManager.objects.filter(vendor=reg_obj, category=costcat)
+            sum = 0
+            for c in cost_data:
+                sum = sum + c.expense
+            data_cost_list.append({"category": costcat, "total_exp": float("{:.3f}".format(sum))})
+        print(data_cost_list)
+        return render(request, "analytics/Charts.html",
+                      {"data_global": data_list_global, "data_user": data_list_user, "users": users,
+                       "farmers": farmers, "product_trends": newlist, "cost_list": data_cost_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+def add_product_view_count(prod_id):
+    product_count = ProductViews.objects.filter(product=VendorProduct.objects.get(id=prod_id)).count()
+    if product_count == 0:
+        prod_instance = ProductViews(product=VendorProduct.objects.get(id=prod_id), views=1)
+        prod_instance.save()
+    else:
+        prod_instance = ProductViews.objects.get(product=VendorProduct.objects.get(id=prod_id))
+        prod_instance.views = prod_instance.views + 1
+        prod_instance.save()
+    return True
+
+
+@api_view(["POST", "GET"])
+def publish_blog(request):
+    if request.method == "GET":
+        if "login_session_data" in request.session:
+            return render(request, 'blog/Publish_Article.html')
+        else:
+            return HttpResponseRedirect(reverse('login-view'))
+    if request.method == "POST":
+        if "login_session_data" in request.session:
+            data = request.data
+            obj = VendorBlogs(vendor=RegisterModel.objects.get(email=request.session["login_session_data"]["email"]),
+                              title=data["title"],
+                              content=str(data["content"]))
+            obj.save()
+            return HttpResponseRedirect(reverse('view-blogs'))
+
+
+def view_blogs(request):
+    if "login_session_data" in request.session:
+        login_data = request.session["login_session_data"]
+        data = VendorBlogs.objects.filter(vendor=login_data["id"])
+        blog_list = [{"id": i.id, "title": i.title, "date_published": i.date_created.strftime("%d-%B-%Y | %H-%M %p"),
+                      "last_updated": i.date_updated.strftime("%d-%B-%Y | %H-%M %p")} for i
+                     in data]
+        return render(request, "blog/View_Blogs.html", {"data": blog_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+@api_view(["GET", "POST"])
+def edit_blog(request, blog_id):
+    if "login_session_data" in request.session:
+        if request.method == "GET":
+            data = VendorBlogs.objects.get(id=blog_id)
+            data_dict = {"id": data.id, "title": data.title, "content": data.content}
+            return render(request, 'blog/Edit_Blog.html', data_dict)
+        if request.method == "POST":
+            data = request.data
+            data_obj = VendorBlogs.objects.get(id=blog_id)
+            data_obj.title = data["title"]
+            data_obj.content = data["content"]
+            data_obj.save()
+            return HttpResponseRedirect(reverse('view-blogs'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+def delete_blog(request, blog_id):
+    if "login_session_data" in request.session:
+        data = VendorBlogs.objects.get(id=blog_id)
+        data.delete()
+        return HttpResponseRedirect(reverse('view-blogs'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+@api_view(["GET", "POST"])
+def cost_manager_view(request):
+    if "login_session_data" in request.session:
+        if request.method == "GET":
+            return render(request, 'cost/Cost_Management.html')
+        if request.method == "POST":
+            data = request.data
+            cost_obj = CostManager(
+                vendor=RegisterModel.objects.get(email=request.session["login_session_data"]["email"]),
+                category=data["category"],
+                coster=data["coster"],
+                expense=data["expense"])
+            cost_obj.save()
+            return HttpResponseRedirect(reverse('view-expenses'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+def view_expenses(request):
+    if "login_session_data" in request.session:
+        login_data = request.session["login_session_data"]
+        data_obj = CostManager.objects.filter(vendor=login_data["id"])
+        exp_list = [
+            {"id": i.id, "coster": i.coster, "category": i.category, "expense": float("{:.2f}".format(i.expense)),
+             "date_created": i.date_created.strftime("%d-%B-%Y | %H-%M %p")} for i in data_obj]
+        return render(request, 'cost/View_Expenses.html', {"data": exp_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+@api_view(["GET", "POST"])
+def edit_expenses(request, exp_id):
+    if "login_session_data" in request.session:
+        if request.method == "GET":
+            data_obj = CostManager.objects.get(id=exp_id)
+            data_dict = {"id": data_obj.id, "coster": data_obj.coster, "category": data_obj.category,
+                         "expense": float("{:.3f}".format(data_obj.expense))}
+            return render(request, 'cost/Edit_Cost.html', data_dict)
+        if request.method == "POST":
+            data = request.data
+            cost_obj = CostManager.objects.get(id=exp_id)
+            cost_obj.coster = data["coster"]
+            cost_obj.category = data["category"]
+            cost_obj.expense = data["expense"]
+            cost_obj.save()
+            return HttpResponseRedirect(reverse('view-expenses'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+def delete_expense(request, exp_id):
+    if "login_session_data" in request.session:
+        if request.method == "GET":
+            data_obj = CostManager.objects.get(id=exp_id)
+            data_obj.delete()
+            return HttpResponseRedirect(reverse('view-expenses'))
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+def view_blog_list(request):
+    if "login_session_data" in request.session:
+        blogs = VendorBlogs.objects.all()
+        data_list = []
+        for i in blogs:
+            data_list.append({
+                "author": i.vendor.first_name + " " + i.vendor.last_name,
+                "title": i.title,
+                "id": i.id,
+                "date_published": i.date_created.strftime("%d-%B-%Y")
+            })
+        return render(request, 'blog/List_Blogs.html', {"data": data_list})
+    else:
+        return HttpResponseRedirect(reverse('login-view'))
+
+
+def show_blog(request, blog_id):
+    if "login_session_data" in request.session:
+        blog = VendorBlogs.objects.get(id=int(blog_id))
+        data = {
+            "author": blog.vendor.first_name + " " + blog.vendor.last_name,
+            "title": blog.title,
+            "id": blog.id,
+            "date_published": blog.date_created.strftime("%d-%B-%Y"),
+            "content": blog.content
+        }
+        return render(request, 'blog/Show_Blog.html', data)
+    else:
+        return HttpResponseRedirect(reverse('login-view'))

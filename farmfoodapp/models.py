@@ -48,3 +48,25 @@ class VendorInventory(models.Model):
     description = models.TextField()
     quantity = models.DecimalField(max_digits=15, decimal_places=10)
     unit = models.CharField(max_length=10)
+
+
+class ProductViews(models.Model):
+    product = models.ForeignKey(VendorProduct, on_delete=models.CASCADE)
+    views = models.IntegerField(default=0)
+
+
+class VendorBlogs(models.Model):
+    vendor = models.ForeignKey(RegisterModel, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300, default="")
+    content = models.TextField(default="")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+
+class CostManager(models.Model):
+    vendor = models.ForeignKey(RegisterModel, on_delete=models.CASCADE)
+    category = models.CharField(max_length=100)
+    coster = models.CharField(max_length=200)
+    expense = models.DecimalField(max_digits=15, decimal_places=10)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)

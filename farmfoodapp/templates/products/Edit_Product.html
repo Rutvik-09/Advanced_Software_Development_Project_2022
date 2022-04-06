@@ -25,11 +25,18 @@
     <section class="header-main border-bottom bg-white">
         <div class="container-fluid">
             <div class="row p-2 pt-3 pb-3 d-flex align-items-center">
-                <div class="col-md-2"><img src="{% static 'Images/Logo_1.png' %}" width="150"></div>
+                <div class="col-md-2"><a href="/"><img src="{% static 'Images/Logo_1.png' %}" width="150"></a></div>
                 <div class="col-md-8">
-                    <div class="d-flex form-inputs"><input class="form-control" type="text"
-                                                           placeholder="Search any product..."> <i
-                            class="bx bx-search"></i></div>
+                    <form method="POST" action="/search-api/">
+                        <div class="d-flex form-inputs">
+
+                            <input class="form-control" type="text" name="search_query"
+                                   placeholder="Search any product..." required>
+                            <i class="bx bx-search"></i>
+
+                        </div>
+                    </form>
+
                 </div>
                 <div class="col-md-2">
                     <ul class="navbar-nav d-flex align-items-center">
@@ -43,12 +50,12 @@
                                 </li>
                                 <li class="nav-item"><a href="#" class="nav-link d-flex align-items-center"
                                                         data-abc="true" id="menu1"
-                                                        data-toggle="dropdown"><span>Functions</span><i
+                                                        data-toggle="dropdown"><span>{{first_name}}</span><i
                                         class='bx bxs-chevron-down'></i></a></li>
 
                             </div>
 
-                          <div class="dropdown-content" style="background-color:salmon;">
+                            <div class="dropdown-content" style="background-color:salmon;">
                                 <a href="/">Home</a>
                                 <a href="/dashboard">Dashboard</a>
                                 <a href="/view-inventory">View Inventory</a>
@@ -77,7 +84,8 @@
 
     <div class="form-group col-lg-4 mt-3 mx-auto">
         <label for="product_name" class="control-label">Product Name</label>
-        <input type="text" class="form-control mt-3" id="product_name" name="product_name" value="{{product_name}}" required>
+        <input type="text" class="form-control mt-3" id="product_name" name="product_name" value="{{product_name}}"
+               required>
     </div>
 
     <div class="form-group col-lg-4 mx-auto">
@@ -102,7 +110,8 @@
     <div class="form-group col-lg-4 mx-auto">
         <label for="price" class="control-label mt-3">Price</label>
         <!-- <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"> -->
-        <input type="number" class="form-control mt-3" id="price" name="price" value="{{price}}" placeholder="CAD" min="0" step="0.01"
+        <input type="number" class="form-control mt-3" id="price" name="price" value="{{price}}" placeholder="CAD"
+               min="0" step="0.01"
                required>
     </div>
 
@@ -144,6 +153,7 @@ for (var i=0; i<opts; i++){
         break;
     }
 }
+
 
 </script>
 </html>

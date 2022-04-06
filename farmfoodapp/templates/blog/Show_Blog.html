@@ -51,11 +51,18 @@
 
         <div class="container-fluid">
             <div class="row p-2 pt-3 pb-3 d-flex align-items-center">
-                <div class="col-md-2"><img src="{% static 'Images/Logo_1.png' %}" width="150"></div>
+                <div class="col-md-2"><a href="/"><img src="{% static 'Images/Logo_1.png' %}" width="150"></a></div>
                 <div class="col-md-8">
-                    <div class="d-flex form-inputs"><input class="form-control" type="text"
-                                                           placeholder="Search any product..."> <i
-                            class="bx bx-search"></i></div>
+                    <form method="POST" action="/search-api/">
+                        <div class="d-flex form-inputs">
+
+                            <input class="form-control" type="text" name="search_query"
+                                   placeholder="Search any product..." required>
+                            <i class="bx bx-search"></i>
+
+                        </div>
+                    </form>
+
                 </div>
                 <div class="col-md-2">
                     <ul class="navbar-nav d-flex align-items-center">

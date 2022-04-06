@@ -246,6 +246,7 @@ def edit_product(request, prod_id):
             ser = VendorProductSer(data)
             data = ser.data
             data["id"] = p_id
+            data["first_name"] = request.session["login_session_data"]["first_name"]
             return render(request, "products/Edit_Product.html", data)
         if request.method == "POST":
             data = request.data

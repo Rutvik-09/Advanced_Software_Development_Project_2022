@@ -97,7 +97,6 @@ def home_page(request):
             "price": float("{:.2f}".format(prod.price)),
             "image": prod.image
         } for prod in data]
-        print(data_list)
         return render(request, 'home/HomePage.html',
                       {"products": data_list, "first_name": request.session["login_session_data"]["first_name"],
                        "is_farmer": isFarmer.is_farmer})
